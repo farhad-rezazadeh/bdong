@@ -1,3 +1,4 @@
+from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
@@ -8,6 +9,12 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import (
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView,
+)
 
 from accounts.forms import SignUpForm
 from accounts.tokens import account_activation_token
@@ -16,12 +23,12 @@ User = get_user_model()
 
 
 class Login(LoginView):
-    template_name = "accounts/login.html"
+    template_name = "registration/login.html"
 
 
 class Register(CreateView):
     form_class = SignUpForm
-    template_name = "accounts/register.html"
+    template_name = "registration/register.html"
 
     def form_valid(self, form):
         user = form.save(commit=False)
@@ -31,7 +38,7 @@ class Register(CreateView):
         mail_subject = "Activate your blog account."
         print(user, current_site.domain, account_activation_token.make_token(user))
         message = render_to_string(
-            "accounts/activate_account.html",
+            "registration/activate_account.html",
             {
                 "user": user,
                 "domain": current_site.domain,
@@ -43,7 +50,7 @@ class Register(CreateView):
         email = EmailMessage(mail_subject, message, to=[to_email])
         email.send()
         message = "Please confirm your email address to complete the registration"
-        return render(self.request, "accounts/check_registered_email.html", {"message": message})
+        return render(self.request, "registration/check_registered_email.html", {"message": message})
 
 
 def activate(request, uidb64, token):
@@ -55,9 +62,18 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        message = (
-            "Thank you for your email confirmation. Now you can <a href='/accounts/login/'>login</a> your account."
-        )
+        message = "Thank you for your email confirmation. Now you can login your account."
     else:
         message = "Activation link is invalid!"
-    return render(request, "accounts/check_registered_email.html", {"message": message})
+    return render(request, "registration/check_registered_email.html", {"message": message})
+
+
+class PasswordResetView(PasswordResetView):
+    template_name = "registration/password_reset_form.html"
+    email_template_name = "registration/password_reset_email.html"
+    success_url = reverse_lazy("account:password_reset_done")
+
+
+class PasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = "registration/password_reset_confirm.html"
+    success_url = reverse_lazy("account:password_reset_complete")

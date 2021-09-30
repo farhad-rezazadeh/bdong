@@ -1,4 +1,4 @@
-{% extends 'accounts/base.html' %}
+{% extends 'registration/base.html' %}
 {% load static %}
 {% load widget_tweaks %}
 
@@ -88,7 +88,7 @@
 
                                         </form>
                                         <hr>
-                                        <div class="text-center"><small class="mr-25">Already have an account?</small><a href="{% url 'accounts:login' %}"><small>Log in</small> </a></div>
+                                        <div class="text-center"><small class="mr-25">Already have an account?</small><a href="{% url 'account:login' %}"><small>Log in</small> </a></div>
                                         {% for error in form.non_field_errors %}
                                         <div class="rounded bg-warning text-center text-white small" style="padding:4px;word-wrap: break-word">
                                               <strong>&#9888;</strong> {{ error }}
