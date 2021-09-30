@@ -14,3 +14,7 @@ services:
     image: postgres:11
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+volumes:
+  postgres_data:
