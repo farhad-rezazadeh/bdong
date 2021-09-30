@@ -8,6 +8,8 @@ django = "*"
 psycopg2-binary = "*"
 black = "==21.9b0"
 python-dotenv = "*"
+six = "*"
+django-widget-tweaks = "*"
 
 [dev-packages]
 pre-commit = "*"
