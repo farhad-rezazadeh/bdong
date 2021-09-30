@@ -1,0 +1,111 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %}Register Page{% endblock %}
+
+{% block Content %}
+    <!-- register section starts -->
+    <section class="row flexbox-container">
+        <div class="col-xl-8 col-10">
+            <div class="card bg-authentication mb-0">
+                <div class="row m-0">
+                    {% block Left %}
+                        <!-- register section left -->
+                        <div class="col-md-6 col-12 px-0">
+                            <div class="card disable-rounded-right mb-0 p-2 h-100 d-flex justify-content-center">
+                                <div class="card-header pb-1">
+                                    <div class="card-title">
+                                        <h4 class="text-center mb-2">Register</h4>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <p> <small> Please enter your details to register and be part of our great community</small>
+                                    </p>
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <form method="post">{% csrf_token %}
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6 mb-50">
+                                                    <label class="text-bold-600 {% if form.first_name.errors %}text-danger{% endif %}" for="{{ form.first_name.id_for_label }}">First name</label>
+                                                    {% render_field form.first_name|add_class:"form-control" placeholder="Username" %}
+                                                    {% for error in form.first_name.errors %}
+                                                        <div class="text-danger small">
+                                                            {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                                <div class="form-group col-md-6 mb-50">
+                                                    <label class="text-bold-600 {% if form.last_name.errors %}text-danger{% endif %}" for="{{ form.last_name.id_for_label }}">Last name</label>
+                                                    {% render_field form.last_name|add_class:"form-control" placeholder="Lastname" %}
+                                                    {% for error in form.last_name.errors %}
+                                                        <div class="text-danger small">
+                                                            {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-50">
+                                                <label class="text-bold-600 {% if form.username.errors %}text-danger{% endif %}" for="{{ form.username.id_for_label }}">Username</label>
+                                                {% render_field form.username|add_class:"form-control" placeholder="Username" %}
+                                                {% for error in form.username.errors %}
+                                                    <div class="text-danger small">
+                                                        &#215; {{ error }}
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="form-group mb-50">
+                                                <label class="text-bold-600 {% if form.email.errors %}text-danger{% endif %}" for="{{ form.email.id_for_label }}">Email</label>
+                                                {% render_field form.email|add_class:"form-control" placeholder="Email Address" %}
+                                                {% for error in form.email.errors %}
+                                                    <div class="text-danger small">
+                                                        &#215; {{ error }}
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="form-group mb-2">
+                                                <label class="text-bold-600 {% if form.password1.errors %}text-danger{% endif %}" for="{{ form.password1.id_for_label }}">Password</label>
+                                                {% render_field form.password1|add_class:"form-control" placeholder="password" %}
+                                                {% for error in form.password1.errors %}
+                                                    <div class="text-danger small">
+                                                        &#215; {{ error }}
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="form-group mb-2">
+                                                <label class="text-bold-600 {% if form.password2.errors %}text-danger{% endif %}" for="{{ form.password2.id_for_label }}">Repeat Password</label>
+                                                {% render_field form.password2|add_class:"form-control" placeholder="repeat password" %}
+                                                {% for error in form.password2.errors %}
+                                                    <div class="text-danger small">
+                                                        &#215; {{ error }}
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+
+                                            <button type="submit" class="btn btn-primary glow position-relative w-100">Register<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
+
+                                        </form>
+                                        <hr>
+                                        <div class="text-center"><small class="mr-25">Already have an account?</small><a href="{% url 'accounts:login' %}"><small>Log in</small> </a></div>
+                                        {% for error in form.non_field_errors %}
+                                        <div class="rounded bg-warning text-center text-white small" style="padding:4px;word-wrap: break-word">
+                                              <strong>&#9888;</strong> {{ error }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endblock %}
+                    <!-- image section right -->
+                    <div class="col-md-6 d-md-block d-none text-center align-self-center p-3">
+                        <img class="img-fluid" src="{% static 'frest/images/pages/register.png'%}" alt="branding logo">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- register section ends -->
+{% endblock %}
