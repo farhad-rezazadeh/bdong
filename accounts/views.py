@@ -38,7 +38,7 @@ class Register(CreateView):
         mail_subject = "Activate your blog account."
         print(user, current_site.domain, account_activation_token.make_token(user))
         message = render_to_string(
-            "registration/activate_account.html",
+            "registration/register_activate_email.html",
             {
                 "user": user,
                 "domain": current_site.domain,
@@ -48,9 +48,10 @@ class Register(CreateView):
         )
         to_email = form.cleaned_data.get("email")
         email = EmailMessage(mail_subject, message, to=[to_email])
+        email.content_subtype = "html"
         email.send()
         message = "Please confirm your email address to complete the registration"
-        return render(self.request, "registration/check_registered_email.html", {"message": message})
+        return render(self.request, "registration/register_activate_complete.html", {"message": message})
 
 
 def activate(request, uidb64, token):
@@ -65,12 +66,12 @@ def activate(request, uidb64, token):
         message = "Thank you for your email confirmation. Now you can login your account."
     else:
         message = "Activation link is invalid!"
-    return render(request, "registration/check_registered_email.html", {"message": message})
+    return render(request, "registration/register_activate_complete.html", {"message": message})
 
 
 class PasswordResetView(PasswordResetView):
     template_name = "registration/password_reset_form.html"
-    email_template_name = "registration/password_reset_email.html"
+    html_email_template_name = "registration/password_reset_email.html"
     success_url = reverse_lazy("account:password_reset_done")
 
 
