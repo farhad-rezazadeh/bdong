@@ -10,6 +10,7 @@ black = "==21.9b0"
 python-dotenv = "*"
 six = "*"
 django-widget-tweaks = "*"
+social-auth-app-django = "*"
 
 [dev-packages]
 pre-commit = "*"
