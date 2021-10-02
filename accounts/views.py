@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.contrib.auth import login, authenticate
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
@@ -16,6 +16,7 @@ from django.contrib.auth.views import (
     PasswordResetCompleteView,
 )
 
+from config import settings
 from accounts.forms import SignUpForm
 from accounts.tokens import account_activation_token
 
@@ -25,10 +26,20 @@ User = get_user_model()
 class Login(LoginView):
     template_name = "registration/login.html"
 
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
+        return super(Login, self).get(request, *args, **kwargs)
+
 
 class Register(CreateView):
     form_class = SignUpForm
     template_name = "registration/register.html"
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
+        return super(Register, self).get(request, *args, **kwargs)
 
     def form_valid(self, form):
         user = form.save(commit=False)

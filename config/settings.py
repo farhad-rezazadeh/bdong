@@ -144,9 +144,12 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = os.getenv("EMAIL_PORT")
 
-
+# Login
 LOGIN_URL = "account:login"
 
+LOGIN_REDIRECT_URL = "/"
+
+# Google Login
 AUTHENTICATION_BACKENDS = (
     "social_core.backends.google.GoogleOAuth2",
     "django.contrib.auth.backends.ModelBackend",
