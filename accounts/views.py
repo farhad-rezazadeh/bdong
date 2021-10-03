@@ -1,4 +1,4 @@
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.contrib.auth import login, authenticate
@@ -23,23 +23,23 @@ from accounts.tokens import account_activation_token
 User = get_user_model()
 
 
-class Login(LoginView):
+class LoginView(LoginView):
     template_name = "registration/login.html"
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
-        return super(Login, self).get(request, *args, **kwargs)
+            return HttpResponseRedirect(reverse(settings.LOGIN_REDIRECT_URL))
+        return super(LoginView, self).get(request, *args, **kwargs)
 
 
-class Register(CreateView):
+class RegisterView(CreateView):
     form_class = SignUpForm
     template_name = "registration/register.html"
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
-        return super(Register, self).get(request, *args, **kwargs)
+            return HttpResponseRedirect(reverse(settings.LOGIN_REDIRECT_URL))
+        return super(RegisterView, self).get(request, *args, **kwargs)
 
     def form_valid(self, form):
         user = form.save(commit=False)
@@ -89,3 +89,7 @@ class PasswordResetView(PasswordResetView):
 class PasswordResetConfirmView(PasswordResetConfirmView):
     template_name = "registration/password_reset_confirm.html"
     success_url = reverse_lazy("account:password_reset_complete")
+
+
+def dashboard(request):
+    return render(request, "dashboard/dashboard.html")

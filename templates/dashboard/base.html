@@ -28,7 +28,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/colors.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/components.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/themes/dark-layout.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/themes/semi-dark-layout.css' %}">
     <!-- END: Theme CSS-->
 
     <!-- BEGIN: Page CSS-->
@@ -93,7 +92,9 @@
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <script src="{% static 'assets/js/scripts/pages/dashboard-analytics.js' %}"></script>
+    {% block js %}
+
+    {% endblock %}
     <!-- END: Page JS-->
 
 </body>

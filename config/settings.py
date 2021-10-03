@@ -147,7 +147,8 @@ EMAIL_PORT = os.getenv("EMAIL_PORT")
 # Login
 LOGIN_URL = "account:login"
 
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "account:dashboard"
+LOGOUT_REDIRECT_URL = "/"
 
 # Google Login
 AUTHENTICATION_BACKENDS = (
