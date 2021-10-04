@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView, UpdateView
 from django.shortcuts import render, HttpResponseRedirect
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
@@ -93,11 +93,18 @@ class Dashboard(LoginRequiredMixin, TemplateView):
     template_name = "dashboard/dashboard.html"
 
 
-class AccountSettings(LoginRequiredMixin, TemplateView):
+class AccountSettings(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = get_user_model()
     template_name = "dashboard/account/account_settings.html"
+    fields = ["first_name", "last_name", "username", "email"]
+    success_message = "fields changed successfully"
+    success_url = reverse_lazy("account:account_settings")
+
+    def get_object(self, queryset=None):
+        return User.objects.get(pk=self.request.user.pk)
 
 
-class PasswordChangeView(SuccessMessageMixin, PasswordChangeView):
+class PasswordChangeView(LoginRequiredMixin, SuccessMessageMixin, PasswordChangeView):
     template_name = "dashboard/account/password_change.html"
     success_url = reverse_lazy("account:dashboard")
-    success_message = "Password change successfully"
+    success_message = "Password changed successfully"

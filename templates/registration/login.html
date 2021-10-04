@@ -57,11 +57,20 @@
                                     </form>
                                     <hr>
                                     <div class="text-center" style="margin-bottom: 2px"><small class="mr-25">Don't have an account?</small><a href="{% url 'account:register' %}"><small>Register</small></a></div>
-                                    {% for error in form.non_field_errors %}
-                                        <div class="rounded bg-warning text-center text-white small" style="padding:4px;word-wrap: break-word">
-                                              <strong>&#9888;</strong> {{ error }}
-                                        </div>
-                                    {% endfor %}
+
+                                    {% if form.non_field_errors %}
+                                    <div class="alert bg-rgba-warning alert-dismissible mt-2" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                        {% for error in form.non_field_errors %}
+                                            <p class="mb-0">
+                                            {{ error }}
+                                            </p>
+                                        {% endfor %}
+
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

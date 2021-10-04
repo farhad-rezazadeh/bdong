@@ -16,6 +16,13 @@
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/logo/loan.png' %}">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
 
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/vendors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/tables/datatable/datatables.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/charts/apexcharts.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/extensions/dragula.min.css' %}">
+    <!-- END: Vendor CSS-->
+
     <!-- BEGIN: Theme CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap-extended.css' %}">
@@ -56,22 +63,21 @@
     </div>
     <!-- END: Content-->
 
-{#    <!-- BEGIN: Vendor JS-->#}
-{#    <script src="{% static 'frest/vendors/js/vendors.min.js'%}"></script>#}
-{#    <script src="{% static 'frest/fonts/LivIconsEvo/js/LivIconsEvo.tools.js'%}"></script>#}
-{#    <script src="{% static 'frest/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js'%}"></script>#}
-{#    <script src="{% static 'frest/fonts/LivIconsEvo/js/LivIconsEvo.min.js'%}"></script>#}
-{#    <!-- BEGIN Vendor JS-->#}
-{##}
-{#    <!-- BEGIN: Page Vendor JS-->#}
-{#    <!-- END: Page Vendor JS-->#}
-{##}
-{#    <!-- BEGIN: Theme JS-->#}
-{#    <script src="{% static 'frest/js/scripts/configs/vertical-menu-dark.js'%}"></script>#}
-{#    <script src="{% static 'frest/js/core/app-menu.js'%}"></script>#}
-{#    <script src="{% static 'frest/js/core/app.js'%}"></script>#}
-{#    <script src="{% static 'frest/js/scripts/components.js'%}"></script>#}
-{#    <script src="{% static 'frest/js/scripts/footer.js'%}"></script>#}
+    <!-- BEGIN: Vendor JS-->
+    <script src="{% static 'assets/vendors/js/vendors.min.js' %}"></script>
+    <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" data-auto-replace-svg="nest"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="{% static 'assets/vendors/js/extensions/toastr.min.js' %}"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="{% static 'assets/js/core/app-menu.js' %}"></script>
+    <script src="{% static 'assets/js/core/app.js' %}"></script>
+    <script src="{% static 'assets/js/scripts/components.js' %}"></script>
+    <script src="{% static 'assets/js/scripts/extensions/toastr.js' %}"></script>
+    <!-- END: Theme JS-->
 
 </body>
 <!-- END: Body-->
