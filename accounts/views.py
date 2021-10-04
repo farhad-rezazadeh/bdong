@@ -1,20 +1,17 @@
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView
-from django.shortcuts import render, redirect, HttpResponseRedirect
-from django.contrib.auth import login, authenticate
+from django.views.generic import CreateView, TemplateView
+from django.shortcuts import render, HttpResponseRedirect
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.contrib.auth import get_user_model
-from django.contrib.auth.views import LoginView
-from django.contrib.auth.views import (
-    PasswordResetView,
-    PasswordResetDoneView,
-    PasswordResetConfirmView,
-    PasswordResetCompleteView,
-)
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetConfirmView, PasswordChangeView
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
+
 
 from config import settings
 from accounts.forms import SignUpForm
@@ -23,8 +20,9 @@ from accounts.tokens import account_activation_token
 User = get_user_model()
 
 
-class LoginView(LoginView):
+class LoginView(SuccessMessageMixin, LoginView):
     template_name = "registration/login.html"
+    success_message = "login in successfully"
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -91,5 +89,15 @@ class PasswordResetConfirmView(PasswordResetConfirmView):
     success_url = reverse_lazy("account:password_reset_complete")
 
 
-def dashboard(request):
-    return render(request, "dashboard/dashboard.html")
+class Dashboard(LoginRequiredMixin, TemplateView):
+    template_name = "dashboard/dashboard.html"
+
+
+class AccountSettings(LoginRequiredMixin, TemplateView):
+    template_name = "dashboard/account/account_settings.html"
+
+
+class PasswordChangeView(SuccessMessageMixin, PasswordChangeView):
+    template_name = "dashboard/account/password_change.html"
+    success_url = reverse_lazy("account:dashboard")
+    success_message = "Password change successfully"

@@ -1,0 +1,60 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}
+    Account Settings
+{% endblock %}
+{% block content %}
+    <div class="content-header row">
+                <div class="content-header-left col-12 mb-2 mt-1">
+                    <div class="row breadcrumbs-top">
+                        <div class="col-12">
+                            <h5 class=" float-left pr-1 mb-0">Account Settings</h5>
+                        </div>
+                    </div>
+                </div>
+    </div>
+    <div class="content-body">
+                <!-- account setting page start -->
+                <section id="page-account-settings">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <!-- left menu section -->
+                                {% url 'account:account_settings' as general %}
+                                {% url 'account:password_change' as password_change %}
+                                <div class="col-md-3 mb-2 mb-md-0 pills-stacked">
+                                    <ul class="nav nav-pills flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link d-flex align-items-center {% if request.path == general %}active{% endif %}"  href={{ general }}>
+                                                <i class="bx bx-cog"></i>
+                                                <span>General</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link d-flex align-items-center {% if request.path == password_change %}active{% endif %}"  href={{ password_change }}>
+                                                <i class="bx bx-lock"></i>
+                                                <span>Change Password</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- right content section -->
+                                <div class="col-md-9">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <div class="card-body">
+                                                <div class="tab-content">
+                                                    {% block from %}
+
+                                                    {% endblock %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- account setting page ends -->
+    </div>
+{% endblock %}
