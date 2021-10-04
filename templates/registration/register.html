@@ -30,7 +30,7 @@
                                             <div class="form-row">
                                                 <div class="form-group col-md-6 mb-50">
                                                     <label class="text-bold-600 {% if form.first_name.errors %}text-danger{% endif %}" for="{{ form.first_name.id_for_label }}">First name</label>
-                                                    {% render_field form.first_name|add_class:"form-control" placeholder="Username" %}
+                                                    {% render_field form.first_name|add_class:"form-control" placeholder="First Name" %}
                                                     {% for error in form.first_name.errors %}
                                                         <div class="text-danger small">
                                                             {{ error }}
