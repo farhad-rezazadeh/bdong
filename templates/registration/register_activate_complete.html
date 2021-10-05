@@ -16,6 +16,19 @@
                         {{ message }}
                     </div>
                     <hr>
+                    <div class="d-flex flex-md-row flex-column justify-content-around">
+                        {% if success == True %}
+                        <a href="{% url 'account:login' %}"
+                           class="btn btn-success btn-block">
+                            <div class="pl-50 d-block text-center">Login</div>
+                        </a>
+                        {% else %}
+                        <a href="{% url 'account:register' %}"
+                           class="btn btn-light-primary btn-block">
+                            <div class="pl-50 d-block text-center">Register</div>
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

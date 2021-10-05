@@ -8,10 +8,10 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetConfirmView, PasswordChangeView
+from django.contrib import messages
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-
 
 from config import settings
 from accounts.forms import SignUpForm
@@ -30,9 +30,11 @@ class LoginView(SuccessMessageMixin, LoginView):
         return super(LoginView, self).get(request, *args, **kwargs)
 
 
-class RegisterView(CreateView):
+class RegisterView(SuccessMessageMixin, CreateView):
     form_class = SignUpForm
     template_name = "registration/register.html"
+    success_url = reverse_lazy("account:login")
+    success_message = "Please confirm your email address to complete the registration"
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -45,12 +47,12 @@ class RegisterView(CreateView):
         user.save()
         current_site = get_current_site(self.request)
         mail_subject = "Activate your blog account."
-        print(user, current_site.domain, account_activation_token.make_token(user))
         message = render_to_string(
             "registration/register_activate_email.html",
             {
                 "user": user,
                 "domain": current_site.domain,
+                "protocol": self.request.scheme,
                 "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                 "token": account_activation_token.make_token(user),
             },
@@ -59,8 +61,8 @@ class RegisterView(CreateView):
         email = EmailMessage(mail_subject, message, to=[to_email])
         email.content_subtype = "html"
         email.send()
-        message = "Please confirm your email address to complete the registration"
-        return render(self.request, "registration/register_activate_complete.html", {"message": message})
+        messages.success(self.request, self.success_message)
+        return HttpResponseRedirect(self.success_url)
 
 
 def activate(request, uidb64, token):
@@ -73,9 +75,11 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         message = "Thank you for your email confirmation. Now you can login your account."
+        success = True
     else:
         message = "Activation link is invalid!"
-    return render(request, "registration/register_activate_complete.html", {"message": message})
+        success = False
+    return render(request, "registration/register_activate_complete.html", {"message": message, "success": success})
 
 
 class PasswordResetView(PasswordResetView):

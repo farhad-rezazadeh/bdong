@@ -24,6 +24,7 @@
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/extensions/toastr.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap-extended.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/colors.css' %}">
@@ -33,6 +34,7 @@
     <!-- END: Theme CSS-->
 
     <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/extensions/toastr.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/pages/authentication.css'%}">
     <!-- END: Page CSS-->
 
@@ -63,6 +65,8 @@
     </div>
     <!-- END: Content-->
 
+
+
     <!-- BEGIN: Vendor JS-->
     <script src="{% static 'assets/vendors/js/vendors.min.js' %}"></script>
     <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" data-auto-replace-svg="nest"></script>
@@ -78,6 +82,16 @@
     <script src="{% static 'assets/js/scripts/components.js' %}"></script>
     <script src="{% static 'assets/js/scripts/extensions/toastr.js' %}"></script>
     <!-- END: Theme JS-->
+
+    <!-- Start: Message -->
+     <script>
+         {% if messages %}
+            {% for message in messages %}
+                toastr.{{ message.tags }}("{{ message }}", {"closeButton": true})
+            {% endfor %}
+         {% endif %}
+     </script>
+    <!-- End: Message -->
 
 </body>
 <!-- END: Body-->
