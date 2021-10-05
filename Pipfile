@@ -11,6 +11,7 @@ python-dotenv = "*"
 six = "*"
 django-widget-tweaks = "*"
 social-auth-app-django = "*"
+django-htmx = "*"
 
 [dev-packages]
 pre-commit = "*"
