@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, TemplateView, UpdateView
+from django.views.generic import CreateView
 from django.shortcuts import render, HttpResponseRedirect
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
@@ -7,10 +7,9 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.contrib.auth import get_user_model
-from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetConfirmView, PasswordChangeView
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetConfirmView
 from django.contrib import messages
 
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
 from config import settings
@@ -91,24 +90,3 @@ class PasswordResetView(PasswordResetView):
 class PasswordResetConfirmView(PasswordResetConfirmView):
     template_name = "registration/password_reset_confirm.html"
     success_url = reverse_lazy("account:password_reset_complete")
-
-
-class Dashboard(LoginRequiredMixin, TemplateView):
-    template_name = "dashboard/dashboard.html"
-
-
-class AccountSettings(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
-    model = get_user_model()
-    template_name = "dashboard/account/account_settings.html"
-    fields = ["first_name", "last_name", "username", "email"]
-    success_message = "fields changed successfully"
-    success_url = reverse_lazy("account:account_settings")
-
-    def get_object(self, queryset=None):
-        return User.objects.get(pk=self.request.user.pk)
-
-
-class PasswordChangeView(LoginRequiredMixin, SuccessMessageMixin, PasswordChangeView):
-    template_name = "dashboard/account/password_change.html"
-    success_url = reverse_lazy("account:dashboard")
-    success_message = "Password changed successfully"

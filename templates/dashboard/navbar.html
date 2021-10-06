@@ -3,7 +3,7 @@
     <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="navbar-header">
             <ul class="nav navbar-nav flex-row">
-                <li class="nav-item mr-auto"><a class="navbar-brand" href="{% url 'account:dashboard' %}">
+                <li class="nav-item mr-auto"><a class="navbar-brand" href="{% url 'dashboard:dashboard' %}">
                         <div class="brand-logo"><img class="logo" src="{% static 'assets/images/logo/loan.png' %}" /></div>
                         <h2 class="brand-text mb-0">Bdong</h2>
                     </a></li>
@@ -14,13 +14,13 @@
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
                 <li class=" nav-item">
-                    <a href="{% url 'account:dashboard' %}">
+                    <a href="{% url 'dashboard:dashboard' %}">
                         <i class="fa fa-cog fa-fw"></i>
                         <span class="menu-title" data-i18n="Dashboard">Dashboard</span>
                     </a>
                 </li>
 
-                <li class="nav-item"><a href="{% url 'account:account_settings' %}"><i class="fa fa-user fa-fw"></i><span class="menu-title" data-i18n="Account Settings">Account Settings</span></a>
+                <li class="nav-item"><a href="{% url 'dashboard:account_settings' %}"><i class="fa fa-user fa-fw"></i><span class="menu-title" data-i18n="Account Settings">Account Settings</span></a>
                 </li>
 
             </ul>

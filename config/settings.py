@@ -27,20 +27,22 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
+THIRD_PARTY_APPS = ["widget_tweaks", "social_django", "django_gravatar"]
 
-INSTALLED_APPS = [
+LOCAL_APPS = ["accounts.apps.AccountsConfig", "dashboard.apps.DashboardConfig"]
+
+DEFAULT_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "accounts.apps.AccountsConfig",
-    "widget_tweaks",
-    "social_django",
-    "django_gravatar",
 ]
 
+INSTALLED_APPS = DEFAULT_APPS + LOCAL_APPS + THIRD_PARTY_APPS
+
+# MiddleWare
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -148,7 +150,7 @@ EMAIL_PORT = os.getenv("EMAIL_PORT")
 # Login
 LOGIN_URL = "account:login"
 
-LOGIN_REDIRECT_URL = "account:dashboard"
+LOGIN_REDIRECT_URL = "dashboard:dashboard"
 LOGOUT_REDIRECT_URL = "/"
 
 # Google Login
