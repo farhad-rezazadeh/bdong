@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "widget_tweaks",
     "social_django",
+    "django_gravatar",
 ]
 
 MIDDLEWARE = [

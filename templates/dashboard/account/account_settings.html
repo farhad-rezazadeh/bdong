@@ -1,22 +1,18 @@
 {% extends 'dashboard/account/base.html' %}
 {% load widget_tweaks %}
+{% load gravatar %}
+
 {% block from %}
     <div class="tab-pane active">
         <div class="media">
             <a href="javascript: void(0);">
-                <img src="../../../assets/images/portrait/small/avatar-s-16.jpg" class="rounded mr-75" alt="profile image" height="64" width="64">
+                <img src="{% gravatar_url user.email 64 %}"  class="rounded mr-75" alt="profile image" height="64" width="64">
             </a>
             <div class="media-body mt-25">
                 <div class="col-12 px-0 d-flex flex-sm-row flex-column justify-content-start">
-                    <label for="select-files" class="btn btn-sm btn-light-primary ml-50 mb-50 mb-sm-0">
-                        <span>Upload new photo</span>
-                        <input id="select-files" type="file" hidden>
-                    </label>
-                    <button class="btn btn-sm btn-light-secondary ml-50">Reset</button>
+                    <a href="https://gravatar.com/" class="btn btn-sm btn-light-primary ml-50 mb-50 mb-sm-0">Upload new photo</a>
                 </div>
-                <p class="text-muted ml-1 mt-50"><small>Allowed JPG, GIF or PNG. Max
-                        size of
-                        800kB</small></p>
+                <p class="text-muted ml-1 mt-50"><small>use Gravatar.com To set new Profile Picture</small></p>
             </div>
         </div>
         <hr>

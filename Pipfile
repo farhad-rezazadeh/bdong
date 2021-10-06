@@ -12,6 +12,7 @@ six = "*"
 django-widget-tweaks = "*"
 social-auth-app-django = "*"
 django-htmx = "*"
+django-gravatar2 = "*"
 
 [dev-packages]
 pre-commit = "*"
