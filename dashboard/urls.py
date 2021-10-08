@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from dashboard.views import (
     Dashboard,
@@ -12,4 +12,5 @@ urlpatterns = [
     path("", Dashboard.as_view(), name="dashboard"),
     path("settings/general/", AccountSettings.as_view(), name="account_settings"),
     path("settings/password_change/", PasswordChangeView.as_view(), name="password_change"),
+    path("group/", include("groups.urls")),
 ]

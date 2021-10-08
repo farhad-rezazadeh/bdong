@@ -1,0 +1,343 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}
+    Create Group
+{% endblock %}
+
+{% block content %}
+        <div class="content-body">
+            <!-- form default repeater -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">
+                                Create Group
+                            </h4>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <form class="form-horizontal" method="POST" action=".">
+                                {% csrf_token %}
+                                <div class=" form-group ml-0">
+                                    <label class="h-25">{{ group_name_form.name.label }}</label>
+                                    <div class="input-group">
+                                        {{ group_name_form.name }}
+                                    </div>
+                                    {% for error in group_name_form.name.errors %}
+                                        <div class="text-danger small form-group">
+                                            &#215; {{ error }}<br/>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="divider">
+                                    <div class="divider-text">add group memeber</div>
+                                </div>
+                                {{ email_formset.management_form }}
+                                {% for email_form in email_formset %}
+                                    <div class="row form-row justify-content-between">
+                                        <div class="col-md-6 col-sm-12 form-group">
+                                            <label>{{ email_form.email.label }}</label>
+                                            <div class="input-group">
+                                                {{ email_form.email }}
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-success add-form-row">+</button>
+                                                </div>
+                                            </div>
+                                            {% for error in email_form.email.errors %}
+                                                <div class="text-danger small form-group">
+                                                    &#215; {{ error }}<br/>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <hr>
+                                <div class="col-12 d-flex flex-sm-row flex-column justify-content-end">
+                                    <button type="submit" class="btn btn-primary glow mr-sm-1 mb-1">Create</button>
+                                </div>
+                        </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/ form default repeater -->
+        </div>
+{% endblock %}
+
+
+<!-- BEGIN: Page JS-->
+{% block js %}
+    <script type="text/javascript">
+        function updateElementIndex(el, prefix, ndx) {
+            var id_regex = new RegExp('(' + prefix + '-\\d+)');
+            var replacement = prefix + '-' + ndx;
+            if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+            if (el.id) el.id = el.id.replace(id_regex, replacement);
+            if (el.name) el.name = el.name.replace(id_regex, replacement);
+        }
+
+        function cloneMore(selector, prefix) {
+            var newElement = $(selector).clone(true);
+            var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+            newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function () {
+                var name = $(this).attr('name')
+                if (name) {
+                    name = name.replace('-' + (total - 1) + '-', '-' + total + '-');
+                    var id = 'id_' + name;
+                    $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+                }
+            });
+            newElement.find('label').each(function () {
+                var forValue = $(this).attr('for');
+                if (forValue) {
+                    forValue = forValue.replace('-' + (total - 1) + '-', '-' + total + '-');
+                    $(this).attr({'for': forValue});
+                }
+            });
+            total++;
+            $('#id_' + prefix + '-TOTAL_FORMS').val(total);
+            $(selector).after(newElement);
+            var conditionRow = $('.form-row:not(:last)');
+            conditionRow.find('.btn.add-form-row')
+                .removeClass('btn-success').addClass('btn-danger')
+                .removeClass('add-form-row').addClass('remove-form-row')
+                .html('-');
+            return false;
+        }
+
+        function deleteForm(prefix, btn) {
+            var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+            if (total > 1) {
+                btn.closest('.form-row').remove();
+                var forms = $('.form-row');
+                $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+                for (var i = 0, formCount = forms.length; i < formCount; i++) {
+                    $(forms.get(i)).find(':input').each(function () {
+                        updateElementIndex(this, prefix, i);
+                    });
+                }
+            }
+            return false;
+        }
+
+        $(document).on('click', '.add-form-row', function (e) {
+            e.preventDefault();
+            cloneMore('.form-row:last', 'form');
+            return false;
+        });
+        $(document).on('click', '.remove-form-row', function (e) {
+            e.preventDefault();
+            deleteForm('form', $(this));
+            return false;
+        });
+
+    </script>
+{% endblock %}
+<!-- END: Page JS-->
+
+
+
+
+{#{% extends 'dashboard/base.html' %}#}
+{#{% load static %}#}
+{##}
+{#{% block title %}#}
+{#    Create Group#}
+{#{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#    <!-- form default repeater -->#}
+{#    <div class="row">#}
+{#        <div class="col-12">#}
+{#            <div class="card">#}
+{#                <div class="card-header">#}
+{#                    <h4 class="card-title">#}
+{#                        ADD MEMBER#}
+{#                    </h4>#}
+{#                </div>#}
+{#                <div class="card-content">#}
+{#                    <div class="card-body">#}
+{#                        <form method="post" id="add_member">#}
+{#                            {% csrf_token %}#}
+{##}
+{#                            <input name="form-INITIAL_FORM_COUNT" value="1" type="hidden">#}
+{#                            <input name="form-TOTAL_FORM_COUNT" value="3" type="hidden">#}
+{##}
+{#                            {{ email_formset.management_form }}#}
+{##}
+{##}
+{##}
+{#                            <fieldset disabled class="empty-form" style="display: none">#}
+{#                                <fieldset class="row justify-content-between">#}
+{#                                    <div class="col-md-6 col-sm-12 form-group">#}
+{#                                        <label for="id_form-1-email">Email</label>#}
+{#                                    <input type="text" name="email-__prefix__-email"  class="form-control"#}
+{#                                           id="id_form-1-email">#}
+{#                                        </div>#}
+{#                                    <div class="col-md-2 col-sm-12 form-group d-flex align-items-center pt-2">#}
+{#                                        <button class="btn btn-danger text-nowrap px-1" data-formset-remove-form type="button"> <i class="bx bx-x"></i>#}
+{#                                            Delete#}
+{#                                        </button>#}
+{#                                    </div>#}
+{#                                </fieldset>#}
+{#                            </fieldset>#}
+{##}
+{#                            <fieldset class="forms">#}
+{#                            #}
+{#                                {% for email_form in email_formset %}#}
+{#                                    <fieldset class="row justify-content-between" >#}
+{#                                        <div class="col-md-6 col-sm-12 form-group">#}
+{#                                            {{ email_form.email }}#}
+{#                                            {% if email_form.email.errors %}#}
+{#                                                {% for error in email_form.email.errors %}#}
+{#                                                    {{ error|escape }}#}
+{#                                                {% endfor %}#}
+{#                                            {% endif %}#}
+{#                                        </div>#}
+{#                                    </fieldset>#}
+{#                                    {% endfor %}#}
+{##}
+{##}
+{#                            </fieldset>#}
+{##}
+{#                            <div class="form-group">#}
+{#                                <div class="col p-0">#}
+{#                                    <button class="btn btn-primary" data-formset-add-form type="button"><i#}
+{#                                            class="bx bx-plus"></i>#}
+{#                                        Add#}
+{#                                    </button>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <hr>#}
+{#                            <div class="col-12 d-flex flex-sm-row flex-column justify-content-end">#}
+{#                                <button type="submit" class="btn btn-success glow mr-sm-1 mb-1">Create</button>#}
+{#                            </div>#}
+{##}
+{#                        </form>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{##}
+{#{% endblock %}#}
+{##}
+{#{% block js %}#}
+{#    <script>#}
+{#        function Formset(element) {#}
+{#            /*#}
+{#              Dynamic Formset handler for Django formsets.#}
+{##}
+{#            Events:#}
+{##}
+{#              * init.formset#}
+{#              * add-form.formset#}
+{#              * remove-form.formset#}
+{#              * renumber-form.formset#}
+{##}
+{#            */#}
+{#            if (!(this instanceof Formset)) {#}
+{#                return new Formset(element);#}
+{#            }#}
+{#            var formset = this;#}
+{#            var emptyForm = element.querySelector('.empty-form').firstElementChild;#}
+{#            var formsList = element.querySelector('.forms');#}
+{##}
+{#            var initialForms = element.querySelector('[name$=INITIAL_FORMS]');#}
+{#            var totalForms = element.querySelector('[name$=TOTAL_FORMS]');#}
+{#            var prefix = initialForms.name.replace(/INITIAL_FORMS$/, '');#}
+{##}
+{#            function addForm(event) {#}
+{#                // Duplicate empty form.#}
+{#                var newForm = emptyForm.cloneNode(true);#}
+{#                // Update all references to __prefix__ in the elements names.#}
+{#                renumberForm(newForm, '1', totalForms.value);#}
+{#                // Make it able to delete itself.#}
+{#                newForm.querySelector('[data-formset-remove-form]').addEventListener('click', removeForm);#}
+{#                // Append the new form to the formsList.#}
+{#                formsList.insertAdjacentElement('beforeend', newForm);#}
+{#                element.dispatchEvent(new CustomEvent('add-form.formset', {#}
+{#                    detail: {#}
+{#                        form: newForm,#}
+{#                        formset: formset#}
+{#                    }#}
+{#                }));#}
+{#                // Update the totalForms.value#}
+{#                totalForms.value = Number(totalForms.value) + 1;#}
+{#            }#}
+{##}
+{#            function getForm(target) {#}
+{#                var parent = target.parentElement;#}
+{#                if (parent == document) {#}
+{#                    return null;#}
+{#                }#}
+{#                if (parent == formsList) {#}
+{#                    return target;#}
+{#                }#}
+{#                return getForm(parent);#}
+{#            }#}
+{##}
+{#            function renumberForm(form, oldValue, newValue) {#}
+{#                var matchValue = prefix + oldValue.toString()#}
+{#                var match = new RegExp(matchValue);#}
+{#                var replace = prefix + newValue.toString();#}
+{##}
+{#                ['name', 'id', 'for'].forEach(function (attr) {#}
+{#                    form.querySelectorAll('[' + attr + '*=' + matchValue + ']').forEach(function (el) {#}
+{#                        el.setAttribute(attr, el.getAttribute(attr).replace(match, replace));#}
+{#                    });#}
+{#                });#}
+{##}
+{#                element.dispatchEvent(new CustomEvent('renumber-form.formset', {#}
+{#                    detail: {#}
+{#                        form: form,#}
+{#                        oldValue: oldValue,#}
+{#                        newValue: newValue,#}
+{#                        formset: formset#}
+{#                    }#}
+{#                }));#}
+{#            }#}
+{##}
+{#            function removeForm(event) {#}
+{#                // Find the form "row": the child of formsList that is the parent of the element#}
+{#                // that triggered this event.#}
+{#                var formToRemove = getForm(event.target);#}
+{#                // Renumber the rows that come after us.#}
+{#                var nextElement = formToRemove.nextElementSibling;#}
+{#                var nextElementIndex = Array.prototype.indexOf.call(formsList.children, formToRemove);#}
+{#                while (nextElement) {#}
+{#                    renumberForm(nextElement, nextElementIndex + 1, nextElementIndex);#}
+{#                    nextElement = nextElement.nextElementSibling;#}
+{#                    nextElementIndex = nextElementIndex + 1;#}
+{#                }#}
+{#                // Remove this row.#}
+{#                formToRemove.remove();#}
+{#                element.dispatchEvent(new CustomEvent('remove-form.formset', {#}
+{#                    detail: {#}
+{#                        form: formToRemove,#}
+{#                        formset: formset#}
+{#                    }#}
+{#                }));#}
+{#                // Decrement the management form's count.#}
+{#                totalForms.value = Number(totalForms.value) - 1;#}
+{#            }#}
+{##}
+{#            element.querySelector('[data-formset-add-form]').addEventListener('click', addForm);#}
+{#            element.formset = this;#}
+{##}
+{#            element.dispatchEvent(new CustomEvent('init.formset', {#}
+{#                detail: {#}
+{#                    formset: this#}
+{#                }#}
+{#            }));#}
+{##}
+{#            this.addForm = addForm;#}
+{#        }#}
+{##}
+{#        new Formset(document.querySelector('#add_member'));#}
+{#    </script>#}
+{#{% endblock %}#}
