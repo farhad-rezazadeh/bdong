@@ -1,0 +1,64 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}
+    Invite List
+{% endblock %}
+
+{% block content %}
+    <div class="content-header row h1">
+        Invite list
+    </div>
+    <div class="content-body">
+        <!-- users list start -->
+        <section class="users-list-wrapper">
+            <div class="users-list-table">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-body">
+                            <!-- datatable start -->
+                            <div class="table-responsive">
+                                <table id="users-list-datatable" class="table">
+                                    <thead>
+                                    <tr class="text-center">
+                                        <th>id</th>
+                                        <th>caller</th>
+                                        <th>user</th>
+                                        <th>group</th>
+                                        <th>date</th>
+                                        <th>actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for invitation in object_list %}
+                                        <tr class="text-center">
+                                            <td>{{ invitation.id }}</td>
+                                            <td>{{ invitation.caller }}</td>
+                                            <td>{{ invitation.user }}</td>
+                                            <td>{{ invitation.group }}</td>
+                                            <td>{{ invitation.invite_date }}</td>
+                                            <td>
+                                                {% if invitation.user == request.user%}
+                                                <span class="badge badge-success" title="accept"><a href="{% url 'dashboard:group:accept_invite' invitation.pk %}"><i
+                                                        class="bx bx-check"></i></a></span>
+                                                <span class="badge badge-danger" title="decline"><a href="{% url 'dashboard:group:delete_invite' invitation.pk %}"><i
+                                                        class="bx bx-minus-circle"></i></a></span>
+                                                {% else %}
+                                                <span class="badge badge-danger" title="decline"><a href="{% url 'dashboard:group:delete_invite' invitation.pk %}"><i
+                                                        class="bx bx-minus-circle"></i></a></span>
+                                                {% endif %}
+
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- datatable ends -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- users list ends -->
+    </div>
+{% endblock %}
