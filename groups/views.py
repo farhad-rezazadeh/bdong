@@ -68,3 +68,16 @@ class AcceptInviteView(LoginRequiredMixin, AcceptInviteAccessMixin, View):
         invitation.delete()
         messages.success(request, f"you join {invitation.group}")
         return HttpResponseRedirect(reverse("dashboard:group:invite_list"))
+
+
+class GroupListView(LoginRequiredMixin, ListView):
+    template_name = "dashboard/group/group_list.html"
+
+    def get_queryset(self):
+        user = self.request.user
+        return user.expense_groups.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(GroupListView, self).get_context_data(**kwargs)
+        context["form"] = EmailForm()
+        return context
