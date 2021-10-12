@@ -10,7 +10,13 @@ from django.views.generic import ListView
 
 from groups.forms import GroupNameFrom, EmailForm
 from groups.models import Group, Invite
-from groups.mixins import DeleteInviteAccessMixin, AcceptInviteAccessMixin
+from groups.mixins import (
+    DeleteInviteAccessMixin,
+    AcceptInviteAccessMixin,
+    DeleteGroupAccessMixin,
+    RemoveGroupMemberAccessMixin,
+    LeaveGroupAccessMixin,
+)
 
 User = get_user_model()
 
@@ -81,3 +87,28 @@ class GroupListView(LoginRequiredMixin, ListView):
         context = super(GroupListView, self).get_context_data(**kwargs)
         context["form"] = EmailForm()
         return context
+
+
+class DeleteGroupView(LoginRequiredMixin, DeleteGroupAccessMixin, View):
+    def get(self, request):
+        group = get_object_or_404(Group, pk=self.kwargs.get("pk"))
+        group.delete()
+        messages.success(request, "group successfully deleted")
+        return HttpResponseRedirect(reverse("dashboard:group:group_list"))
+
+
+class LeaveGroupView(LoginRequiredMixin, LeaveGroupAccessMixin, View):
+    def get(self, request):
+        group = get_object_or_404(Group, pk=self.kwargs.get("pk"))
+        group.members.remove(request.user)
+        messages.success(request, "you leave group")
+        return HttpResponseRedirect(reverse("dashboard:group:group_list"))
+
+
+class RemoveGroupMemberView(LoginRequiredMixin, RemoveGroupMemberAccessMixin, View):
+    def get(self, request):
+        group = get_object_or_404(Group, pk=self.kwargs.get("group_pk"))
+        user = get_object_or_404(User, pk=self.kwargs.get("user_pk"))
+        group.members.remove(user)
+        messages.success(request, "memeber removed")
+        return HttpResponseRedirect(reverse("dashboard:group:group_list"))

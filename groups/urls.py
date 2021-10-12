@@ -1,6 +1,15 @@
 from django.urls import path
 
-from groups.views import create_group, InviteListView, DeleteInviteView, AcceptInviteView, GroupListView
+from groups.views import (
+    create_group,
+    InviteListView,
+    DeleteInviteView,
+    AcceptInviteView,
+    GroupListView,
+    DeleteGroupView,
+    LeaveGroupView,
+    RemoveGroupMemberView,
+)
 
 app_name = "group"
 
@@ -10,4 +19,11 @@ urlpatterns = [
     path("delete_invite/<int:pk>/", DeleteInviteView.as_view(), name="delete_invite"),
     path("accept_invite/<int:pk>/", AcceptInviteView.as_view(), name="accept_invite"),
     path("group_list", GroupListView.as_view(), name="group_list"),
+    path("delete_group/<int:pk>/", DeleteGroupView.as_view(), name="delete_group"),
+    path("leave_group/<int:pk>/", LeaveGroupView.as_view(), name="leave_group"),
+    path(
+        "remover_group_member/<int:group_pk>/<int:user_pk>/",
+        RemoveGroupMemberView.as_view(),
+        name="remove_group_member",
+    ),
 ]

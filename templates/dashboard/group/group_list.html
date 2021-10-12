@@ -29,9 +29,9 @@
                                     </thead>
                                     <tbody>
                                     {% for group in object_list %}
-                                        <tr data-toggle="collapse" data-target="#group{{ group.id }}"
-                                            class="accordion-toggle">
-                                            <td>
+                                        <tr>
+                                            <td data-toggle="collapse" data-target="#group{{ group.id }}"
+                                                class="accordion-toggle">
                                                 <button class="btn btn-default btn-xs"><i class="fa fa-eye fa-fw "></i>
                                                 </button>
                                             </td>
@@ -41,9 +41,10 @@
                                             <td>{{ group.created }}</td>
                                             <td>
                                                 {% if request.user == group.creator %}
-                                                    <a href="#" class="btn btn-danger">Delete</a>
+                                                    <a href="{% url 'dashboard:group:delete_group' group.pk %}"
+                                                       class="btn btn-danger">Delete</a>
                                                 {% else %}
-                                                    <a href="#" class="btn btn-danger">Leave</a>
+                                                    <a href="{% url 'dashboard:group:leave_group' group.pk %}" class="btn btn-danger">Leave</a>
                                                 {% endif %}
                                             </td>
                                         </tr>
@@ -58,40 +59,42 @@
                                                             <th>email</th>
                                                             <th>rule</th>
                                                             {% if request.user == group.creator %}
-                                                            <th>action</th>
+                                                                <th>action</th>
                                                             {% endif %}
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        {% for memeber in group.members.all %}
+                                                        {% for member in group.members.all %}
                                                             <tr>
-                                                                <td class="text-bold-500">{{ memeber.get_full_name }}</td>
-                                                                <td>{{ memeber.username }}</td>
-                                                                <td class="text-bold-500">{{ memeber.email }}</td>
-                                                                <td>Remote</td>
+                                                                <td class="text-bold-500">{{ member.get_full_name }}</td>
+                                                                <td>{{ member.username }}</td>
+                                                                <td class="text-bold-500">{{ member.email }}</td>
+                                                                <td>{% if member == group.creator %}creator{% else %}memeber{% endif %}</td>
                                                                 {% if request.user == group.creator %}
-                                                                <td>
-                                                                <a href="#" class="btn btn-danger">Delete</a>
-                                                                </td>
+                                                                    <td>
+                                                                        {% if member != request.user %}
+                                                                        <a href="{% url 'dashboard:group:remove_group_member' group.pk member.pk %}" class="btn btn-danger">Remove</a>
+                                                                        {% endif %}
+                                                                    </td>
                                                                 {% endif %}
                                                             </tr>
                                                         {% endfor %}
-{#                                                        {% if request.user == group.creator %}#}
-{#                                                         <tr>#}
-{#                                                         <form  method="post" action=".">#}
-{#                                                                {% csrf_token %}#}
-{#                                                                <td colspan="4">#}
-{#                                                                    {% csrf_token %}#}
-{#                                                                    {{ form.email }}#}
-{#                                                                </td>#}
-{#                                                                <td colspan="1">#}
-{#                                                                    <button type="submit" class="btn btn-success glow">#}
-{#                                                                        Invite#}
-{#                                                                    </button>#}
-{#                                                                </td>#}
-{#                                                            </form>#}
-{#                                                        </tr>#}
-{#                                                        {% endif %}#}
+                                                        {#                                                        {% if request.user == group.creator %}#}
+                                                        {#                                                         <tr>#}
+                                                        {#                                                         <form  method="post" action=".">#}
+                                                        {#                                                                {% csrf_token %}#}
+                                                        {#                                                                <td colspan="4">#}
+                                                        {#                                                                    {% csrf_token %}#}
+                                                        {#                                                                    {{ form.email }}#}
+                                                        {#                                                                </td>#}
+                                                        {#                                                                <td colspan="1">#}
+                                                        {#                                                                    <button type="submit" class="btn btn-success glow">#}
+                                                        {#                                                                        Invite#}
+                                                        {#                                                                    </button>#}
+                                                        {#                                                                </td>#}
+                                                        {#                                                            </form>#}
+                                                        {#                                                        </tr>#}
+                                                        {#                                                        {% endif %}#}
                                                         </tbody>
                                                     </table>
                                                 </div>
