@@ -27,7 +27,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-THIRD_PARTY_APPS = ["widget_tweaks", "social_django", "django_gravatar"]
+THIRD_PARTY_APPS = ["widget_tweaks", "social_django", "django_gravatar", "django_htmx"]
 
 LOCAL_APPS = ["accounts.apps.AccountsConfig", "dashboard.apps.DashboardConfig", "groups.apps.GroupsConfig"]
 
@@ -51,6 +51,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"

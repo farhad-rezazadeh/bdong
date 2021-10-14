@@ -1,4 +1,6 @@
 {% extends 'dashboard/base.html' %}
+{% load django_htmx %}
+{% django_htmx_script %}
 
 {% block title %}
     Group List
@@ -41,10 +43,19 @@
                                             <td>{{ group.created }}</td>
                                             <td>
                                                 {% if request.user == group.creator %}
+                                                    <button
+                                                            hx-get="{% url 'dashboard:group:manage_group' group.pk%}"
+                                                            hx-target="#modals-here"
+                                                            hx-trigger="click"
+                                                            class="btn btn-info">
+                                                        Manage
+                                                    </button>
                                                     <a href="{% url 'dashboard:group:delete_group' group.pk %}"
                                                        class="btn btn-danger">Delete</a>
+                                                    <div id="modals-here"></div>
                                                 {% else %}
-                                                    <a href="{% url 'dashboard:group:leave_group' group.pk %}" class="btn btn-danger">Leave</a>
+                                                    <a href="{% url 'dashboard:group:leave_group' group.pk %}"
+                                                       class="btn btn-danger">Leave</a>
                                                 {% endif %}
                                             </td>
                                         </tr>
@@ -69,32 +80,18 @@
                                                                 <td class="text-bold-500">{{ member.get_full_name }}</td>
                                                                 <td>{{ member.username }}</td>
                                                                 <td class="text-bold-500">{{ member.email }}</td>
-                                                                <td>{% if member == group.creator %}creator{% else %}memeber{% endif %}</td>
+                                                                <td>{% if member == group.creator %}creator{% else %}
+                                                                    memeber{% endif %}</td>
                                                                 {% if request.user == group.creator %}
                                                                     <td>
                                                                         {% if member != request.user %}
-                                                                        <a href="{% url 'dashboard:group:remove_group_member' group.pk member.pk %}" class="btn btn-danger">Remove</a>
+                                                                            <a href="{% url 'dashboard:group:remove_group_member' group.pk member.pk %}"
+                                                                               class="btn btn-danger">Remove</a>
                                                                         {% endif %}
                                                                     </td>
                                                                 {% endif %}
                                                             </tr>
                                                         {% endfor %}
-                                                        {#                                                        {% if request.user == group.creator %}#}
-                                                        {#                                                         <tr>#}
-                                                        {#                                                         <form  method="post" action=".">#}
-                                                        {#                                                                {% csrf_token %}#}
-                                                        {#                                                                <td colspan="4">#}
-                                                        {#                                                                    {% csrf_token %}#}
-                                                        {#                                                                    {{ form.email }}#}
-                                                        {#                                                                </td>#}
-                                                        {#                                                                <td colspan="1">#}
-                                                        {#                                                                    <button type="submit" class="btn btn-success glow">#}
-                                                        {#                                                                        Invite#}
-                                                        {#                                                                    </button>#}
-                                                        {#                                                                </td>#}
-                                                        {#                                                            </form>#}
-                                                        {#                                                        </tr>#}
-                                                        {#                                                        {% endif %}#}
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -114,4 +111,87 @@
     </div>
 
 
+{% endblock %}
+{% block js %}
+    <script>
+        function closeModal() {
+            var container = document.getElementById("modals-here")
+            var backdrop = document.getElementById("modal-backdrop")
+            var modal = document.getElementById("modal")
+
+            modal.classList.remove("show")
+            backdrop.classList.remove("show")
+
+            setTimeout(function () {
+                container.removeChild(backdrop)
+                container.removeChild(modal)
+            }, 200)
+            location.reload()
+        }
+    </script>
+    <script type="text/javascript">
+        function updateElementIndex(el, prefix, ndx) {
+            var id_regex = new RegExp('(' + prefix + '-\\d+)');
+            var replacement = prefix + '-' + ndx;
+            if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+            if (el.id) el.id = el.id.replace(id_regex, replacement);
+            if (el.name) el.name = el.name.replace(id_regex, replacement);
+        }
+
+        function cloneMore(selector, prefix) {
+            var newElement = $(selector).clone(true);
+            var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+            newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function () {
+                var name = $(this).attr('name')
+                if (name) {
+                    name = name.replace('-' + (total - 1) + '-', '-' + total + '-');
+                    var id = 'id_' + name;
+                    $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+                }
+            });
+            newElement.find('label').each(function () {
+                var forValue = $(this).attr('for');
+                if (forValue) {
+                    forValue = forValue.replace('-' + (total - 1) + '-', '-' + total + '-');
+                    $(this).attr({'for': forValue});
+                }
+            });
+            total++;
+            $('#id_' + prefix + '-TOTAL_FORMS').val(total);
+            $(selector).after(newElement);
+            var conditionRow = $('.form-row:not(:last)');
+            conditionRow.find('.btn.add-form-row')
+                .removeClass('btn-success').addClass('btn-danger')
+                .removeClass('add-form-row').addClass('remove-form-row')
+                .html('-');
+            return false;
+        }
+
+        function deleteForm(prefix, btn) {
+            var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+            if (total > 1) {
+                btn.closest('.form-row').remove();
+                var forms = $('.form-row');
+                $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+                for (var i = 0, formCount = forms.length; i < formCount; i++) {
+                    $(forms.get(i)).find(':input').each(function () {
+                        updateElementIndex(this, prefix, i);
+                    });
+                }
+            }
+            return false;
+        }
+
+        $(document).on('click', '.add-form-row', function (e) {
+            e.preventDefault();
+            cloneMore('.form-row:last', 'form');
+            return false;
+        });
+        $(document).on('click', '.remove-form-row', function (e) {
+            e.preventDefault();
+            deleteForm('form', $(this));
+            return false;
+        });
+
+    </script>
 {% endblock %}

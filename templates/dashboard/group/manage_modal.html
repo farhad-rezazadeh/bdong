@@ -1,0 +1,19 @@
+{% load django_htmx %}
+{% django_htmx_script %}
+
+<div id="modal-backdrop" class="modal-backdrop fade show" style="display:block;"></div>
+<div id="modal" class="modal fade show modal-dialog-scrollable" tabindex="-1" style="display:block;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Manage Group and Invite New member</h5>
+            </div>
+            <div class="modal-body">
+                {% include 'dashboard/group/mange_form.html' %}
+            </div>
+{#            <div class="modal-footer">#}
+{#                <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>#}
+{#            </div>#}
+        </div>
+    </div>
+</div>

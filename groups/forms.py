@@ -28,4 +28,5 @@ class GroupNameFrom(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.creator = kwargs.pop("creator", None)
+        self.group = kwargs.pop("group", None)
         super(GroupNameFrom, self).__init__(*args, **kwargs)
