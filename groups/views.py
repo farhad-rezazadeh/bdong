@@ -13,7 +13,7 @@ from groups.models import Group, Invite
 from groups.mixins import (
     DeleteInviteAccessMixin,
     AcceptInviteAccessMixin,
-    DeleteGroupAccessMixin,
+    CreatorGroupAccessMixin,
     RemoveGroupMemberAccessMixin,
     LeaveGroupAccessMixin,
 )
@@ -89,7 +89,7 @@ class GroupListView(LoginRequiredMixin, ListView):
         return context
 
 
-class DeleteGroupView(LoginRequiredMixin, DeleteGroupAccessMixin, View):
+class DeleteGroupView(LoginRequiredMixin, CreatorGroupAccessMixin, View):
     def get(self, request):
         group = get_object_or_404(Group, pk=self.kwargs.get("pk"))
         group.delete()
@@ -114,23 +114,19 @@ class RemoveGroupMemberView(LoginRequiredMixin, RemoveGroupMemberAccessMixin, Vi
         return HttpResponseRedirect(reverse("dashboard:group:group_list"))
 
 
-class ManageGroupView(View):
+class InviteMemberView(LoginRequiredMixin, CreatorGroupAccessMixin, View):
     EmailFormset = formset_factory(EmailForm)
 
     def get(self, request, pk):
-        group = get_object_or_404(Group, pk=pk)
-        group_name_form = GroupNameFrom(creator=request.user, group=group, initial={"name": group.name})
         email_formset = self.EmailFormset()
-        context = {"group_name_form": group_name_form, "email_formset": email_formset, "group_pk": pk}
-        return render(request, "dashboard/group/manage_modal.html", context=context)
+        context = {"formset": email_formset, "pk": pk}
+        return render(request, "dashboard/group/invite_member_modal.html", context=context)
 
     def post(self, request, pk):
         group = get_object_or_404(Group, pk=pk)
-        group_name_form = GroupNameFrom(request.POST, creator=request.user, group=group)
         email_formset = self.EmailFormset(request.POST)
 
-        if group_name_form.is_valid() and email_formset.is_valid():
-            group.name = group_name_form.cleaned_data["name"]
+        if email_formset.is_valid():
             for email_form in email_formset:
                 if email_form.is_valid():
                     if member_email := email_form.cleaned_data.get("email"):
@@ -140,7 +136,7 @@ class ManageGroupView(View):
             return HttpResponse(
                 """
                     <div class="alert alert-success mb-2" role="alert">
-                    change and invite successfully take place
+                    new member invite
                     </div>
                     <div class="float-right">
                     <button type="button" class="btn btn-warning glow mr-sm-1 mb-1" onclick="closeModal()">Close</button>
@@ -148,5 +144,30 @@ class ManageGroupView(View):
                     """
             )
         if request.htmx:
-            context = {"group_name_form": group_name_form, "email_formset": email_formset, "group_pk": pk}
-            return render(request, "dashboard/group/mange_form.html", context=context)
+            context = {"formset": email_formset, "pk": pk}
+            return render(request, "dashboard/group/invite_member_form.html", context=context)
+
+
+class ChangeGroupName(LoginRequiredMixin, CreatorGroupAccessMixin, View):
+    def get(self, request, pk):
+        group = get_object_or_404(Group, pk=pk)
+        group_name_form = GroupNameFrom(creator=request.user, initial={"name": group.name})
+        context = {"form": group_name_form, "pk": pk}
+        return render(request, "dashboard/group/change_group_name_form.html", context=context)
+
+    def post(self, request, pk):
+        group = get_object_or_404(Group, pk=pk)
+        group_name_form = GroupNameFrom(request.POST, creator=request.user)
+
+        if group_name_form.is_valid():
+            group.name = group_name_form.cleaned_data["name"]
+            group.save()
+            return HttpResponse(
+                f"""<div hx-target="this" hx-swap="outerHTML" >
+                            {group.name}
+                        <button hx-get="{reverse('dashboard:group:change_group_name', kwargs={'pk': group.pk})}" class="btn btn-icon rounded-circle btn-warning  float-right"><i class="bx bx-edit"></i></button>
+                    </div>"""
+            )
+        if request.htmx:
+            context = {"form": group_name_form, "pk": pk}
+            return render(request, "dashboard/group/change_group_name_form.html", context=context)

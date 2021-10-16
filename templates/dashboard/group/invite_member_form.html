@@ -1,34 +1,20 @@
 {% load django_htmx %}
 {% django_htmx_script %}
 
-<form class="form-horizontal" hx-post="{% url 'dashboard:group:manage_group' group_pk %}" hx-target="this" hx-swap="outerHTML">
+<form class="form-horizontal" hx-post="{% url 'dashboard:group:invite_member' pk %}" hx-target="this" hx-swap="outerHTML">
     {% csrf_token %}
-    <div class=" form-group ml-0">
-        <label class="h-25">{{ group_name_form.name.label }}</label>
-        <div class="input-group">
-            {{ group_name_form.name }}
-        </div>
-        {% for error in group_name_form.name.errors %}
-            <div class="text-danger small form-group">
-                &#215; {{ error }}<br/>
-            </div>
-        {% endfor %}
-    </div>
-    <div class="divider">
-        <div class="divider-text">invite group memeber</div>
-    </div>
-    {{ email_formset.management_form }}
-    {% for email_form in email_formset %}
+    {{ formset.management_form }}
+    {% for form in formset %}
         <div class="row form-row justify-content-between">
             <div class="col-md-12 col-sm-12 form-group">
-                <label>{{ email_form.email.label }}</label>
+                <label>{{ form.email.label }}</label>
                 <div class="input-group">
-                    {{ email_form.email }}
+                    {{ form.email }}
                     <div class="input-group-append">
                         <button class="btn btn-success add-form-row">+</button>
                     </div>
                 </div>
-                {% for error in email_form.email.errors %}
+                {% for error in form.email.errors %}
                     <div class="text-danger small form-group">
                         &#215; {{ error }}<br/>
                     </div>

@@ -38,17 +38,27 @@
                                                 </button>
                                             </td>
                                             <td>{{ group.id }}</td>
-                                            <td>{{ group.name }}</td>
+                                            <td>
+                                                {% if request.user == group.creator %}
+                                                    <div hx-target="this" hx-swap="outerHTML" >
+                                                            {{ group.name }}
+                                                        <button hx-get="{% url 'dashboard:group:change_group_name' group.pk %}" class="btn btn-icon rounded-circle btn-warning  float-right"><i class="bx bx-edit"></i></button>
+                                                    </div>
+
+                                                {% else %}
+                                                    {{ group.name }}
+                                                {% endif %}
+                                            </td>
                                             <td>{{ group.creator }}</td>
                                             <td>{{ group.created }}</td>
                                             <td>
                                                 {% if request.user == group.creator %}
                                                     <button
-                                                            hx-get="{% url 'dashboard:group:manage_group' group.pk%}"
+                                                            hx-get="{% url 'dashboard:group:invite_member' group.pk%}"
                                                             hx-target="#modals-here"
                                                             hx-trigger="click"
                                                             class="btn btn-info">
-                                                        Manage
+                                                        Invite
                                                     </button>
                                                     <a href="{% url 'dashboard:group:delete_group' group.pk %}"
                                                        class="btn btn-danger">Delete</a>
@@ -126,7 +136,6 @@
                 container.removeChild(backdrop)
                 container.removeChild(modal)
             }, 200)
-            location.reload()
         }
     </script>
     <script type="text/javascript">

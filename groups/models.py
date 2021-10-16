@@ -18,7 +18,7 @@ class Group(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def invite_member(self, user):
-        return Invite.objects.create(group=self, caller=self.creator, user=user)
+        return Invite.objects.get_or_create(group=self, caller=self.creator, user=user)
 
     def __str__(self):
         return f"{self.name} #{self.id}"

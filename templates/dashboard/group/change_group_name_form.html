@@ -1,0 +1,15 @@
+{% load django_htmx %}
+{% django_htmx_script %}
+
+<form class=d-flex hx-post="{% url 'dashboard:group:change_group_name' pk %}" hx-target="this" hx-swap="outerHTML">
+    {% csrf_token %}
+        {{ form.name }}
+    {% for error in form.name.errors %}
+        <div class="text-danger small form-group">
+            &#215; {{ error }}<br/>
+        </div>
+    {% endfor %}
+
+
+    <button type="submit" class="btn btn-icon rounded-circle btn-success"><i class="bx bx-check"></i></button>
+</form>

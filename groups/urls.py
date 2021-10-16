@@ -9,7 +9,8 @@ from groups.views import (
     DeleteGroupView,
     LeaveGroupView,
     RemoveGroupMemberView,
-    ManageGroupView,
+    InviteMemberView,
+    ChangeGroupName,
 )
 
 app_name = "group"
@@ -27,5 +28,6 @@ urlpatterns = [
         RemoveGroupMemberView.as_view(),
         name="remove_group_member",
     ),
-    path("manage_group/<int:pk>/", ManageGroupView.as_view(), name="manage_group"),
+    path("invite_member/<int:pk>/", InviteMemberView.as_view(), name="invite_member"),
+    path("change_group_name/<int:pk>/", ChangeGroupName.as_view(), name="change_group_name"),
 ]
