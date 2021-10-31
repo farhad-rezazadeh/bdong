@@ -29,7 +29,12 @@ ALLOWED_HOSTS = []
 # Application definition
 THIRD_PARTY_APPS = ["widget_tweaks", "social_django", "django_gravatar", "django_htmx"]
 
-LOCAL_APPS = ["accounts.apps.AccountsConfig", "dashboard.apps.DashboardConfig", "groups.apps.GroupsConfig"]
+LOCAL_APPS = [
+    "accounts.apps.AccountsConfig",
+    "dashboard.apps.DashboardConfig",
+    "groups.apps.GroupsConfig",
+    "wallet.apps.WalletConfig",
+]
 
 DEFAULT_APPS = [
     "django.contrib.admin",

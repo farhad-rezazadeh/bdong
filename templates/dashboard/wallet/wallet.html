@@ -1,0 +1,51 @@
+{% extends 'dashboard/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+    charge wallet
+{% endblock %}
+{% block content %}
+    <section class="row">
+        <div class="col-sm-12 col-md-4">
+            <div class="card border-success" style="height: 650.5px;">
+                <div class="card-header">
+                    <h1>Withdrawal</h1>
+                    <div class="align-items-center d-flex justify-content-center">
+                        <div class="card-text">
+                            <p>After withdraw, the amount of money that have you entered transfer to your <code>&lt;credit
+                                card number&gt;</code></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body" style="margin-top: 10%">
+                    {% include 'dashboard/wallet/withdraw_form.html' %}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <div class="card border-info" style="height: 650.5px;">
+                <div class="card-header">
+                    <h1>Deposit</h1>
+                </div>
+                <div class="card-body text-center" style="margin-top: 10%">
+                    <i class="fa fa-wallet fa-10x fa-fw " style="color:#5bc0de"></i>
+                    <p class="text-muted mb-0 line-ellipsis h1 mt-2">Balance</p>
+                    <h2 class="mb-0">$ {{ request.user.wallet }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <div class="card border-danger" style="height: 650.5px;">
+                <div class="card-header">
+                    <h1>Charge</h1>
+                    <div class="card-text">
+                        <p>You can charge your wallet to pay your debts.</p>
+                    </div>
+                </div>
+                <div class="card-body" style="margin-top: 10%">
+                    {% include 'dashboard/wallet/charge_form.html' %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

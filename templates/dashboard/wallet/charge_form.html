@@ -1,0 +1,28 @@
+{% load django_htmx %}
+{% load widget_tweaks %}
+{% django_htmx_script %}
+
+<form hx-post="{% url 'dashboard:wallet:charge_wallet' %}" hx-target="this" hx-swap="outerHTML">
+    {% csrf_token %}
+    <div class="form-group">
+        <div class="controls">
+            <label class="{% if charge_form.amount.errors %}text-danger{% endif %}"
+                   for="{{ charge_form.amount.id_for_label }}">Charge Amount</label>
+            {% render_field charge_form.amount|add_class:"form-control" placeholder="Amount" %}
+            {% for error in charge_form.amount.errors %}
+                <div class="text-danger small">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <button type="submit" class="btn btn-danger glow mr-sm-1 mb-1 float-right">
+        Charge
+    </button>
+</form>
+
+<script>
+    {% if success %}
+        location.reload();
+    {% endif %}
+</script>
