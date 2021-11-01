@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
+django = "3.2.7"
 psycopg2-binary = "*"
 black = "==21.9b0"
 python-dotenv = "*"
@@ -13,6 +13,7 @@ django-widget-tweaks = "*"
 social-auth-app-django = "*"
 django-htmx = "*"
 django-gravatar2 = "*"
+django-active-link = "*"
 
 [dev-packages]
 pre-commit = "*"

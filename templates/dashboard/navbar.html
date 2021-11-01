@@ -1,4 +1,5 @@
 {% load static %}
+{% load active_link_tags %}
 <!-- BEGIN: Main Menu-->
     <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="navbar-header">
@@ -13,25 +14,25 @@
         <div class="shadow-bottom"></div>
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
-                <li class=" nav-item">
+                <li class="nav-item {% active_link 'dashboard:dashboard' strict=True %}">
                     <a href="{% url 'dashboard:dashboard' %}">
                         <i class="fa fa-cog fa-fw"></i>
                         <span class="menu-title" data-i18n="Dashboard">Dashboard</span>
                     </a>
                 </li>
-                <li class=" nav-item"><a href="#"><i class="fa fa-users fa-fw"></i><span class="menu-title" data-i18n="Card">Groups</span></a>
+                <li class="nav-item has-sub  {% active_link  'dashboard:group:create_group ||  dashboard:group:group_list || dashboard:group:invite_list' css_class='open sidebar-group-active'%}"><a href="#"><i class="fa fa-users fa-fw"></i><span class="menu-title" data-i18n="Card">Groups</span></a>
                     <ul class="menu-content">
-                        <li><a href="{% url 'dashboard:group:create_group' %}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Basic">Create</span></a>
+                        <li class="{% active_link  'dashboard:group:create_group'%}"><a href="{% url 'dashboard:group:create_group' %}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Basic">Create</span></a>
                         </li>
-                        <li><a href="{% url 'dashboard:group:group_list' %}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Basic">Manage</span></a>
+                        <li class="{% active_link  'dashboard:group:group_list'%}"><a href="{% url 'dashboard:group:group_list' %}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Basic">Manage</span></a>
                         </li>
-                        <li><a href="{% url 'dashboard:group:invite_list' %}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Basic">Invitations</span></a>
+                        <li class="{% active_link  'dashboard:group:invite_list'%}"><a href="{% url 'dashboard:group:invite_list' %}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Basic">Invitations</span></a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item"><a href="{% url 'dashboard:wallet:wallet' %}"><i class="fa fa-wallet fa-fw"></i><span class="menu-title" data-i18n="Wallet">Wallet</span></a>
+                <li class="nav-item {% active_link 'dashboard:wallet:wallet' %}"><a href="{% url 'dashboard:wallet:wallet' %}"><i class="fa fa-wallet fa-fw"></i><span class="menu-title" data-i18n="Wallet">Wallet</span></a>
                 </li>
-                <li class="nav-item"><a href="{% url 'dashboard:account_settings' %}"><i class="fa fa-user fa-fw"></i><span class="menu-title" data-i18n="Account Settings">Account Settings</span></a>
+                <li class="nav-item {% active_link 'dashboard:account_settings' %}"><a href="{% url 'dashboard:account_settings' %}"><i class="fa fa-user fa-fw"></i><span class="menu-title" data-i18n="Account Settings">Account Settings</span></a>
                 </li>
 
             </ul>

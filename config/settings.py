@@ -27,7 +27,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-THIRD_PARTY_APPS = ["widget_tweaks", "social_django", "django_gravatar", "django_htmx"]
+THIRD_PARTY_APPS = ["widget_tweaks", "social_django", "django_gravatar", "django_htmx", "active_link"]
 
 LOCAL_APPS = [
     "accounts.apps.AccountsConfig",
