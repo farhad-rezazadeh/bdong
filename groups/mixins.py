@@ -26,7 +26,7 @@ class CreatorGroupAccessMixin:
     def dispatch(self, request, pk, *args, **kwargs):
         group = get_object_or_404(Group, pk=pk)
         if group.creator == request.user:
-            return super().dispatch(request, *args, **kwargs)
+            return super().dispatch(request, pk, *args, **kwargs)
         else:
             return HttpResponseForbidden()
 

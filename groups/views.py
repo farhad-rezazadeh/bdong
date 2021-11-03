@@ -90,8 +90,8 @@ class GroupListView(LoginRequiredMixin, ListView):
 
 
 class DeleteGroupView(LoginRequiredMixin, CreatorGroupAccessMixin, View):
-    def get(self, request):
-        group = get_object_or_404(Group, pk=self.kwargs.get("pk"))
+    def get(self, request, pk):
+        group = get_object_or_404(Group, pk=pk)
         group.delete()
         messages.success(request, "group successfully deleted")
         return HttpResponseRedirect(reverse("dashboard:group:group_list"))
