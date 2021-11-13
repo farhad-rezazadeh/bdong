@@ -1,0 +1,95 @@
+{% load django_htmx %}
+{% load widget_tweaks %}
+{% django_htmx_script %}
+<form class="form" hx-post="{% url 'dashboard:expense:add_expense_step' 3 %}" hx-target="this" hx-swap="outerHTML"
+      id="form">
+    {% csrf_token %}
+    <!-- Stepper -->
+    <div class="steps-form">
+        <div class="steps-row setup-panel">
+            <div class="steps-step">
+                <i class="fa fa-receipt fa-fw circle-icon " style="color:#00fc4b"></i>
+            </div>
+            <div class="steps-step">
+                <i class="fa fa-pen fa-fw circle-icon" style="color:#ffed00"></i>
+            </div>
+            <div class="steps-step">
+                <i class="fa fa-check fa-fw circle-icon" style="color:#5bc0de"></i>
+            </div>
+        </div>
+    </div>
+    <div class="form-body" style="margin-top: 50px">
+        <div class="row">
+            {{ forms.management_form }}
+
+            {% for form in forms %}
+                <div class="col-md-8 col-12">
+                    <div class="form-group">
+                        <label class="text-bold-600 {% if form.user.errors %}text-danger{% endif %}"
+                               for="{{ form.user.id_for_label }}">User</label>
+                        {% render_field form.user|add_class:"form-control" placeholder="User" %}
+                        {% for error in form.user.errors %}
+                            <div class="text-danger small">
+                                &#215; {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-2 col-12">
+                    <label class="text-bold-600 {% if form.share.errors %}text-danger{% endif %}"
+                           for="{{ form.share.id_for_label }}">Share</label>
+                    {% render_field form.share|add_class:"form-control" placeholder="Share" %}
+                    {% for error in form.share.errors %}
+                        <div class="text-danger small">
+                            &#215; {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-2 col-12">
+                    <label class="text-bold-600 {% if form.paid.errors %}text-danger{% endif %}"
+                           for="{{ form.paid.id_for_label }}">paid</label>
+                    {% render_field form.paid|add_class:"form-control" placeholder="paid" %}
+                    {% for error in form.paid.errors %}
+                        <div class="text-danger small">
+                            &#215; {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+            {% endfor %}
+            {% if error %}
+                <div class="col-12">
+                    <div class="alert bg-rgba-warning alert-dismissible mt-2" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <p class="mb-0">
+                            {{ error }}
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+
+            {#            <div class=" col-12">#}
+            {#                <div class="form-group">#}
+            {#                    <label class="text-bold-600 {% if form.description.errors %}text-danger{% endif %}"#}
+            {#                           for="{{ form.description.id_for_label }}">description</label>#}
+            {#                    {% render_field form.description|add_class:"form-control" placeholder="text" %}#}
+            {#                    {% for error in form.description.errors %}#}
+            {#                        <div class="text-danger small">#}
+            {#                            &#215; {{ error }}#}
+            {#                        </div>#}
+            {#                    {% endfor %}#}
+            {#                </div>#}
+            {#            </div>#}
+
+
+            <div class="col-12 d-flex justify-content-end">
+                <button class="btn btn-primary mr-1" hx-get="{% url 'dashboard:expense:add_expense_step' 1 %}"
+                        hx-target="form" hx-swap="outerHTML">Back
+                </button>
+                <button type="submit" class="btn btn-success mr-1">Next</button>
+            </div>
+        </div>
+    </div>
+</form>

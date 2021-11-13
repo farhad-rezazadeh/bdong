@@ -1,5 +1,8 @@
 {% extends 'dashboard/base.html' %}
 {% load static %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/pages/dashboard-analytics.css' %}">
+{% endblock %}
 {% block content %}
     <div class="content-header row">
     </div>
@@ -69,9 +72,9 @@
                                     <div class="card-body donut-chart-wrapper">
                                         <div id="donut-chart" class="d-flex justify-content-center"></div>
                                         <ul class="list-inline d-flex justify-content-around mb-0">
-                                            <li> <span class="bullet bullet-xs bullet-warning mr-50"></span>Search</li>
-                                            <li> <span class="bullet bullet-xs bullet-info mr-50"></span>Email</li>
-                                            <li> <span class="bullet bullet-xs bullet-primary mr-50"></span>Social</li>
+                                            <li><span class="bullet bullet-xs bullet-warning mr-50"></span>Search</li>
+                                            <li><span class="bullet bullet-xs bullet-info mr-50"></span>Email</li>
+                                            <li><span class="bullet bullet-xs bullet-primary mr-50"></span>Social</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -164,7 +167,8 @@
                                         <small class="text-muted d-inline-block mb-50">Total Sales</small>
                                         <small class="float-right">$8,125</small>
                                         <div class="progress progress-bar-primary progress-sm">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="50" style="width:50%"></div>
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="50"
+                                                 style="width:50%"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -178,7 +182,8 @@
                                         <small class="text-muted d-inline-block mb-50">Income Amount</small>
                                         <small class="float-right">$18,963</small>
                                         <div class="progress progress-bar-success progress-sm">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="80" style="width:80%"></div>
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="80"
+                                                 style="width:80%"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -192,7 +197,8 @@
                                         <small class="text-muted d-inline-block mb-50">Total Budget</small>
                                         <small class="float-right">$14,150</small>
                                         <div class="progress progress-bar-warning progress-sm">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="60" style="width:60%"></div>
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                 style="width:60%"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -206,7 +212,8 @@
                                         <small class="text-muted d-inline-block mb-50">Completed Tasks</small>
                                         <small class="float-right">106</small>
                                         <div class="progress progress-bar-danger progress-sm">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="30" style="width:30%"></div>
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="30"
+                                                 style="width:30%"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -306,7 +313,9 @@
                     <div class="card">
                         <div class="card-body text-center">
                             <div class="dropdown">
-                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+                                        id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
                                     2019
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">

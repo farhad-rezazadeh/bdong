@@ -27,13 +27,14 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-THIRD_PARTY_APPS = ["widget_tweaks", "social_django", "django_gravatar", "django_htmx", "active_link"]
+THIRD_PARTY_APPS = ["widget_tweaks", "social_django", "django_gravatar", "django_htmx", "active_link", "mathfilters"]
 
 LOCAL_APPS = [
     "accounts.apps.AccountsConfig",
     "dashboard.apps.DashboardConfig",
     "groups.apps.GroupsConfig",
     "wallet.apps.WalletConfig",
+    "expenses.apps.ExpensesConfig",
 ]
 
 DEFAULT_APPS = [

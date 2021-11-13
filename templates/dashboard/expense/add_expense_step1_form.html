@@ -1,0 +1,63 @@
+{% load django_htmx %}
+{% load widget_tweaks %}
+{% django_htmx_script %}
+<form class="form" hx-post="{% url 'dashboard:expense:add_expense_step' 2 %}" hx-target="this" hx-swap="outerHTML">
+    {% csrf_token %}
+    <!-- Stepper -->
+    <div class="steps-form">
+        <div class="steps-row setup-panel">
+            <div class="steps-step">
+                <i class="fa fa-receipt fa-fw circle-icon " style="color:#ffed00"></i>
+            </div>
+            <div class="steps-step">
+                <i class="fa fa-pen fa-fw circle-icon" style="color:#5bc0de"></i>
+            </div>
+            <div class="steps-step">
+                <i class="fa fa-check fa-fw circle-icon" style="color:#5bc0de"></i>
+            </div>
+        </div>
+    </div>
+    <div class="form-body" style="margin-top: 50px">
+        <div class="row">
+            <div class="col-md-6 col-12">
+                <div class="form-group">
+                    <label class="text-bold-600 {% if form.total_cost.errors %}text-danger{% endif %}"
+                           for="{{ form.total_cost.id_for_label }}">Total Cost</label>
+                    {% render_field form.total_cost|add_class:"form-control" placeholder="Total Cost" %}
+                    {% for error in form.total_cost.errors %}
+                        <div class="text-danger small">
+                            &#215; {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <label class="text-bold-600 {% if form.group.errors %}text-danger{% endif %}"
+                       for="{{ form.group.id_for_label }}">Total Cost</label>
+                {% render_field form.group|add_class:"form-control" placeholder="Total Cost" %}
+                {% for error in form.group.errors %}
+                    <div class="text-danger small">
+                        &#215; {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class=" col-12">
+                <div class="form-group">
+                    <label class="text-bold-600 {% if form.description.errors %}text-danger{% endif %}"
+                           for="{{ form.description.id_for_label }}">description</label>
+                    {% render_field form.description|add_class:"form-control" placeholder="text" %}
+                    {% for error in form.description.errors %}
+                        <div class="text-danger small">
+                            &#215; {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+            <div class="col-12 d-flex justify-content-end">
+                <button type="submit" class="btn btn-success mr-1">Next</button>
+            </div>
+        </div>
+    </div>
+</form>

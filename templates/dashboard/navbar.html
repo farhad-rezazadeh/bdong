@@ -30,6 +30,16 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item has-sub  {% active_link  'dashboard:expense:add_expense' css_class='open sidebar-group-active'%}"><a href="#"><i class="fa fa-receipt fa-fw"></i><span class="menu-title" data-i18n="Card">Expenses</span></a>
+                    <ul class="menu-content">
+                        <li class="{% active_link  'dashboard:expense:add_expense'%}"><a href="{% url 'dashboard:expense:add_expense' %}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Basic">Add Expense</span></a>
+                        </li>
+                        <li ><a href="#"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Basic">Manage</span></a>
+                        </li>
+                        <li ><a href="#"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Basic">Accountancy</span></a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item {% active_link 'dashboard:wallet:wallet' %}"><a href="{% url 'dashboard:wallet:wallet' %}"><i class="fa fa-wallet fa-fw"></i><span class="menu-title" data-i18n="Wallet">Wallet</span></a>
                 </li>
                 <li class="nav-item {% active_link 'dashboard:account_settings' %}"><a href="{% url 'dashboard:account_settings' %}"><i class="fa fa-user fa-fw"></i><span class="menu-title" data-i18n="Account Settings">Account Settings</span></a>

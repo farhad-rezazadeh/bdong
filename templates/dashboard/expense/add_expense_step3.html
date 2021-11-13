@@ -1,0 +1,102 @@
+{% load django_htmx %}
+{% load mathfilters %}
+{% django_htmx_script %}
+
+<div class="card invoice-print-area" hx-target="this" hx-swap="outerHTML">
+    <div class="card-body pb-0 mx-25">
+        <!-- Stepper -->
+        <div class="steps-form">
+            <div class="steps-row setup-panel">
+                <div class="steps-step">
+                    <i class="fa fa-receipt fa-fw circle-icon " style="color:#00fc4b"></i>
+                </div>
+                <div class="steps-step">
+                    <i class="fa fa-pen fa-fw circle-icon" style="color:#00fc4b"></i>
+                </div>
+                <div class="steps-step">
+                    <i class="fa fa-check fa-fw circle-icon" style="color:#ffed00"></i>
+                </div>
+            </div>
+        </div>
+        <!-- description -->
+        <div class="row my-2 my-sm-3">
+            <div class="col-sm-6 col-12 text-center text-sm-left order-2 order-sm-1">
+                <h4 class="text-primary">Expense</h4>
+                <span>{{ request.session.add_expense.description }}</span>
+            </div>
+        </div>
+        <hr>
+        <!-- invoice address and contact -->
+        <div class="row invoice-info">
+            <div class="col-sm-6 col-12 mt-1">
+                <h6 class="invoice-from">Bill From</h6>
+                <div class="mb-1">
+                    <span>Name: {{ request.user.get_full_name }}</span>
+                </div>
+                <div class="mb-1">
+                    <span>Username: {{ request.user.username }}</span>
+                </div>
+                <div class="mb-1">
+                    <span>Email: {{ request.user.email }}</span>
+                </div>
+            </div>
+            <div class="col-sm-6 col-12 mt-1">
+                <h6 class="invoice-to">Bill To</h6>
+                <div class="mb-1">
+                    <span>{{ group }}</span>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <!-- product details table-->
+    <div class="invoice-product-details table-responsive">
+        <table class="table table-borderless mb-0">
+            <thead>
+            <tr class="border-0">
+                <th scope="col">Email</th>
+                <th scope="col">Share</th>
+                <th scope="col">Paid</th>
+                <th scope="col" class="text-right">Balance</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for participant in request.session.add_expense.participants %}
+                <tr>
+                    <td>{{ participant.0 }}</td>
+                    <td>${{ participant.1 }}</td>
+                    <td>${{ participant.2 }}</td>
+                    <td class="text-primary text-right font-weight-bold">${{ participant.2|sub:participant.1|floatformat:2 }} </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- invoice subtotal -->
+    <div class="card-body pt-0 mx-25">
+        <hr>
+        <div class="row">
+            <div class="col-4 col-sm-6 col-12 mt-75">
+                <p>Thanks for submit.</p>
+            </div>
+            <div class="col-8 col-sm-6 col-12 d-flex justify-content-end mt-75">
+                <div class="invoice-subtotal">
+
+                    <div class="invoice-calc d-flex justify-content-between">
+                        <span class="invoice-title">Total Expense:&nbsp;</span>
+                        <span class="invoice-value">${{ request.session.add_expense.total_cost }}</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 d-flex justify-content-end">
+        <button class="btn btn-primary mr-1" hx-get="{% url 'dashboard:expense:add_expense_step' 2 %}">Back</button>
+        <button class="btn btn-success mr-1" hx-get="{% url 'dashboard:expense:add_expense_submit' %}">
+            Done
+        </button>
+    </div>
+
+</div>

@@ -14,4 +14,5 @@ urlpatterns = [
     path("settings/password_change/", PasswordChangeView.as_view(), name="password_change"),
     path("group/", include("groups.urls")),
     path("wallet/", include("wallet.urls")),
+    path("expense/", include("expenses.urls")),
 ]
