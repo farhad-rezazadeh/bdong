@@ -1,11 +1,13 @@
 from decimal import Decimal
+
 from django.shortcuts import render
-from django.views.generic import View
+from django.views.generic import View, ListView
 from django.forms.formsets import formset_factory
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, reverse
 
 from groups.models import Group
 from expenses.forms import AddExpenseFromStep1, AddExpenseFromStep2
@@ -88,8 +90,8 @@ class CreateExpenseView(LoginRequiredMixin, View):
                             return render(request, "dashboard/expense/add_expense_step2_form.html", {"forms": forms})
 
                     if (
-                        paid_sum != request.session["add_expense"]["total_cost"]
-                        or share_sum != request.session["add_expense"]["total_cost"]
+                        abs(paid_sum - request.session["add_expense"]["total_cost"]) > 0.00001
+                        or abs(share_sum - request.session["add_expense"]["total_cost"]) > 0.00001
                     ):
                         error = f'Sum of paid or sum of share is not equal to total cost \n your total cost is {request.session["add_expense"]["total_cost"]}'
                         return render(
@@ -129,3 +131,23 @@ class SubmitExpense(LoginRequiredMixin, AddExpenseAccessMixin, View):
         request.session["add_expense"] = None
         messages.success(request, "Expense added")
         return HTTPResponseHXRedirect(redirect_to=reverse_lazy("dashboard:dashboard"))
+
+
+class ExpenseListView(LoginRequiredMixin, ListView):
+    template_name = "dashboard/expense/expense_list.html"
+
+    def get_queryset(self):
+        user = self.request.user
+        return user.participants.all()
+
+
+class DeleteExpenseView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        expense = get_object_or_404(Expense, pk=pk)
+        total_transfer_amount = expense.get_totoal_transfer_amount()
+        for creditor in expense.get_creditors():
+            for debtor in expense.get_debtors():
+                insert_data(debtor, creditor, total_transfer_amount)
+        expense.delete()
+        messages.success(request, "Expense Deleted")
+        return HttpResponseRedirect(reverse("dashboard:expense:expense_list"))

@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 
 from groups.models import Group
+from expenses.models import Expense
 
 User = get_user_model()
 
@@ -28,11 +29,20 @@ class AddExpenseAccessMixin:
             if (
                 request.user in group.members.all()
                 and all_participant_is_group_member
-                and paid_sum == total_cost
-                and share_sum == total_cost
+                and abs(paid_sum - total_cost) < 0.000001
+                and abs(share_sum - total_cost) < 0.000001
             ):
                 return super().dispatch(request, *args, **kwargs)
             else:
                 return HttpResponseForbidden()
         except:
             return Http404()
+
+
+class DeleteExpenseMixin:
+    def dispatch(self, request, pk, *args, **kwargs):
+        expense = get_object_or_404(Expense, pk=pk)
+        if expense.creator == request.user:
+            return super().dispatch(request, pk, *args, **kwargs)
+        else:
+            return HttpResponseForbidden()

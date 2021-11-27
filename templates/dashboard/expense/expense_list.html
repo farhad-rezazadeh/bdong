@@ -1,0 +1,162 @@
+{% extends 'dashboard/base.html' %}
+{% load django_htmx %}
+{% django_htmx_script %}
+{% load mathfilters %}
+
+{% block title %}
+    expense List
+{% endblock %}
+{% block content %}
+    <div class="content-header row h1">
+        Expense List
+    </div>
+    <div class="content-body">
+        <!-- users list start -->
+        <section class="users-list-wrapper">
+            <div class="users-list-table">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-body">
+                            <!-- datatable start -->
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>id</th>
+                                        <th>creator</th>
+                                        <th>created date</th>
+                                        <th>group</th>
+                                        <th>total cost</th>
+                                        <th>action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for expense in object_list %}
+                                        <tr class="bg-dark">
+                                            <td data-toggle="collapse" data-target="#group{{ expense.id }}"
+                                                class="accordion-toggle">
+                                                <button class="btn btn-default btn-xs"><i class="fa fa-eye fa-fw "></i>
+                                                </button>
+                                            </td>
+                                            <td>{{ expense.id }}</td>
+                                            <td>{{ expense.creator }}</td>
+                                            <td>{{ expense.created }}</td>
+                                            <td>{{ expense.group }}</td>
+                                            <td>{{ expense.total_cost }}</td>
+                                            <td>
+                                                {% if request.user == expense.creator %}
+                                                    <a href="{% url 'dashboard:expense:delete_expense' expense.pk %}"
+                                                       class="btn btn-danger">Delete</a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="12" class="hiddenRow" style="padding: 0 !important">
+                                                <div class="accordian-body collapse" id="group{{ expense.id }}">
+                                                    <section class="invoice-view-wrapper bg-dark">
+                                                        <div class="card invoice-print-area">
+                                                            <div class="card-body pb-0 mx-25">
+                                                                <div class="row">
+                                                                    <div class="col-lg-4 col-md-12">
+                                                                        <span class="invoice-number mr-50">Expense#</span>
+                                                                        <span>{{ expense.id }}</span>
+                                                                    </div>
+                                                                    <div class="col-lg-8 col-md-12">
+                                                                        <div class="d-flex align-items-center justify-content-lg-end flex-wrap">
+                                                                            <div class="mr-3">
+                                                                                <small class="text-muted">Issue
+                                                                                    Date:</small>
+                                                                                <span>{{ expense.created }}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- description -->
+                                                                <div class="row my-2 my-sm-3">
+                                                                    <div class="col-sm-6 col-12 text-center text-sm-left order-2 order-sm-1">
+                                                                        <h4 class="text-primary">Expense</h4>
+                                                                        <span>{{ expense.description }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                                <!-- invoice address and contact -->
+                                                                <div class="row invoice-info">
+                                                                    <div class="col-sm-6 col-12 mt-1">
+                                                                        <h6 class="invoice-from">Bill From</h6>
+                                                                        <div class="mb-1">
+                                                                            <span>Name: {{ expense.creator.get_full_name }}</span>
+                                                                        </div>
+                                                                        <div class="mb-1">
+                                                                            <span>Username: {{ expense.creator.username }}</span>
+                                                                        </div>
+                                                                        <div class="mb-1">
+                                                                            <span>Email: {{ expense.creator.email }}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6 col-12 mt-1">
+                                                                        <h6 class="invoice-to">Bill To</h6>
+                                                                        <div class="mb-1">
+                                                                            <span>{{ expense.group }}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                            </div>
+                                                            <!-- product details table-->
+                                                            <div class="invoice-product-details table-responsive">
+                                                                <table class="table table-borderless mb-0">
+                                                                    <thead>
+                                                                    <tr class="border-0">
+                                                                        <th scope="col">Email</th>
+                                                                        <th scope="col">Share</th>
+                                                                        <th scope="col">Paid</th>
+                                                                        <th scope="col" class="text-right">Balance</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    {% for share in expense.share_set.all %}
+                                                                        <tr>
+                                                                            <td>{{ share.user.email }}</td>
+                                                                            <td>${{ share.share }}</td>
+                                                                            <td>${{ share.paid }}</td>
+                                                                            <td class="text-primary text-right font-weight-bold">
+                                                                                ${{ share.paid|sub:share.share|floatformat:2 }} </td>
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                            <!-- invoice subtotal -->
+                                                            <div class="card-body pt-0 mx-25">
+                                                                <hr>
+                                                                <div class="row">
+                                                                    <div class="col-4 col-sm-6 col-12 mt-75">
+                                                                        <span class="invoice-title">Total Expense:&nbsp;</span>
+                                                                        <span class="invoice-value">${{ expense.total_cost }}</span>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </section>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- datatable ends -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Group list ends -->
+    </div>
+
+
+{% endblock %}
