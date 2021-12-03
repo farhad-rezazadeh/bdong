@@ -1,0 +1,56 @@
+{% extends 'dashboard/base.html' %}
+{% load widget_tweaks %}
+{% load gravatar %}
+
+{% block title %}
+    accountancy
+{% endblock %}
+{% block content %}
+    <section class="row">
+        <div class="col-sm-12 col-md-6">
+            <div class="card border-success" style="height:auto;">
+                <div class="card-header">
+                    <h2>you are owed</h2>
+                </div>
+                <ul class="list-group" style="padding: 15px">
+                    {% for credit in credits %}
+                        <li class="list-group-item  rounded bg-rgba-success"
+                            style="margin-top:4px; padding: 5px">
+                            <img class="round" src="{% gravatar_url credit.0.email 40 %}" alt="avatar"
+                                 height="40" width="40">
+                            <span class="ml-1"><b>{{ credit.0 }}</b></span>
+                            <div class="badge badge-success mr-1 float-right font-medium-2" style="margin-top: 3px">
+                                ${{ credit.1 }}</div>
+
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="card border-danger" style="height: auto;">
+                <div class="card-header">
+                    <h1>you owe</h1>
+                    <div class="card-text">
+                        <p>for settle up <b>click</b> on badge.</p>
+                    </div>
+                </div>
+
+                <ul class="list-group" style="padding: 15px">
+                    {% for debt in debts %}
+                        <li class="list-group-item  rounded bg-rgba-danger"
+                            style="margin-top:4px; padding: 5px">
+                            <img class="round" src="{% gravatar_url debt.0.email 40 %}" alt="avatar"
+                                 height="40" width="40">
+                            <span class="ml-1"><b>{{ debt.0 }}</b></span>
+                            <a class="badge badge-danger mr-1 float-right font-medium-2" style="margin-top: 3px" href="{% url 'dashboard:expense:settle_up' debt.0.pk %}">
+                                ${{ debt.1 }}</a>
+
+                        </li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

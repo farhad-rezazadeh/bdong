@@ -8,12 +8,15 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, reverse
+from django.contrib.auth import get_user_model
 
 from groups.models import Group
 from expenses.forms import AddExpenseFromStep1, AddExpenseFromStep2
 from expenses.models import Expense
-from expenses.utils import insert_data
+from expenses.utils import insert_data, get_credits, get_debts, get_balance, settle_up
 from expenses.mixins import AddExpenseAccessMixin
+
+User = get_user_model()
 
 
 class CreateExpenseView(LoginRequiredMixin, View):
@@ -151,3 +154,32 @@ class DeleteExpenseView(LoginRequiredMixin, View):
         expense.delete()
         messages.success(request, "Expense Deleted")
         return HttpResponseRedirect(reverse("dashboard:expense:expense_list"))
+
+
+class AccountancyView(LoginRequiredMixin, View):
+    def get(self, request):
+        _credits = get_credits(request.user)
+        _credits = map(lambda credit: (User.objects.get(pk=credit[0]), credit[1]), _credits)
+        _debts = get_debts(request.user)
+        _debts = map(lambda debt: (User.objects.get(pk=debt[0]), debt[1]), _debts)
+        return render(request, "dashboard/expense/accountancy.html", context={"credits": _credits, "debts": _debts})
+
+
+class SettleUpView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        amount = get_balance(request.user.pk, pk)
+        if amount > request.user.wallet:
+            messages.warning(request, "not Enough deposit")
+            return HttpResponseRedirect(reverse("dashboard:expense:accountancy"))
+        else:
+            creditor = get_object_or_404(User, pk=pk)
+
+            creditor.wallet += Decimal(amount).quantize(Decimal(".00"))
+            creditor.save()
+
+            request.user.wallet -= Decimal(amount).quantize(Decimal(".00"))
+            request.user.save()
+
+            settle_up(request.user.pk, pk)
+            messages.success(request, "success")
+            return HttpResponseRedirect(reverse("dashboard:expense:accountancy"))

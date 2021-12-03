@@ -30,13 +30,13 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item has-sub  {% active_link  'dashboard:expense:add_expense || dashboard:expense:expense_list' css_class='open sidebar-group-active'%}"><a href="#"><i class="fa fa-receipt fa-fw"></i><span class="menu-title" data-i18n="Card">Expenses</span></a>
+                <li class="nav-item has-sub  {% active_link  'dashboard:expense:add_expense || dashboard:expense:expense_list || dashboard:expense:accountancy' css_class='open sidebar-group-active'%}"><a href="#"><i class="fa fa-receipt fa-fw"></i><span class="menu-title" data-i18n="Card">Expenses</span></a>
                     <ul class="menu-content">
                         <li class="{% active_link  'dashboard:expense:add_expense'%}"><a href="{% url 'dashboard:expense:add_expense' %}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Basic">Add Expense</span></a>
                         </li>
                         <li class="{% active_link  'dashboard:expense:expense_list'%}"><a href="{% url 'dashboard:expense:expense_list' %}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Basic">Manage</span></a>
                         </li>
-                        <li ><a href="#"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Basic">Accountancy</span></a>
+                        <li class="{% active_link  'dashboard:expense:accountancy'%}"><a href="{% url 'dashboard:expense:accountancy' %}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Basic">Accountancy</span></a>
                         </li>
                     </ul>
                 </li>
