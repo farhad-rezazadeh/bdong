@@ -331,69 +331,69 @@ $(window).on("load", function () {
 
   // Donut Chart
   // ---------------------
-  var donutChartOption = {
-    chart: {
-      width: 200,
-      type: 'donut',
-    },
-    dataLabels: {
-      enabled: false
-    },
-    series: [80, 30, 60],
-    labels: ["Social", "Email", "Search"],
-    stroke: {
-      width: 0,
-      lineCap: 'round',
-    },
-    colors: [$primary, $info, $warning],
-    plotOptions: {
-      pie: {
-        donut: {
-          size: '90%',
-          labels: {
-            show: true,
-            name: {
-              show: true,
-              fontSize: '15px',
-              colors: $sub_label_color,
-              offsetY: 20,
-              fontFamily: 'IBM Plex Sans',
-            },
-            value: {
-              show: true,
-              fontSize: '26px',
-              fontFamily: 'Rubik',
-              color: $label_color,
-              offsetY: -20,
-              formatter: function (val) {
-                return val
-              }
-            },
-            total: {
-              show: true,
-              label: 'Impression',
-              color: $gray_light,
-              formatter: function (w) {
-                return w.globals.seriesTotals.reduce(function (a, b) {
-                  return a + b
-                }, 0)
-              }
-            }
-          }
-        }
-      }
-    },
-    legend: {
-      show: false
-    }
-  }
-
-  var donutChart = new ApexCharts(
-    document.querySelector("#donut-chart"),
-    donutChartOption
-  );
-
-  donutChart.render();
+  // var donutChartOption = {
+  //   chart: {
+  //     width: 200,
+  //     type: 'donut',
+  //   },
+  //   dataLabels: {
+  //     enabled: false
+  //   },
+  //   series: [80, 30, 60],
+  //   labels: ["Social", "Email", "Search"],
+  //   stroke: {
+  //     width: 0,
+  //     lineCap: 'round',
+  //   },
+  //   colors: [$primary, $info, $warning],
+  //   plotOptions: {
+  //     pie: {
+  //       donut: {
+  //         size: '90%',
+  //         labels: {
+  //           show: true,
+  //           name: {
+  //             show: true,
+  //             fontSize: '15px',
+  //             colors: $sub_label_color,
+  //             offsetY: 20,
+  //             fontFamily: 'IBM Plex Sans',
+  //           },
+  //           value: {
+  //             show: true,
+  //             fontSize: '26px',
+  //             fontFamily: 'Rubik',
+  //             color: $label_color,
+  //             offsetY: -20,
+  //             formatter: function (val) {
+  //               return val
+  //             }
+  //           },
+  //           total: {
+  //             show: true,
+  //             label: 'Impression',
+  //             color: $gray_light,
+  //             formatter: function (w) {
+  //               return w.globals.seriesTotals.reduce(function (a, b) {
+  //                 return a + b
+  //               }, 0)
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   },
+  //   legend: {
+  //     show: false
+  //   }
+  // }
+  //
+  // var donutChart = new ApexCharts(
+  //   document.querySelector("#donut-chart"),
+  //   donutChartOption
+  // );
+  //
+  // donutChart.render();
 
   // Stacked Bar Nagetive Chart
   // ----------------------------------
@@ -531,7 +531,7 @@ $(window).on("load", function () {
         right: 0
       }
     },
-    colors: [$warning],
+    colors: [$danger],
     dataLabels: {
       enabled: false,
     },
@@ -547,7 +547,7 @@ $(window).on("load", function () {
       gradient: {
         shade: 'dark',
         type: "horizontal",
-        gradientToColors: [$warning],
+        gradientToColors: [$danger],
         opacityFrom: 0,
         opacityTo: 0.9,
         stops: [0, 30, 70, 100]
@@ -568,7 +568,7 @@ $(window).on("load", function () {
   }
 
   var warningLineChart = new ApexCharts(
-    document.querySelector("#warning-line-chart"),
+    document.querySelector("#danger-line-chart"),
     warningLineChartOption
   );
   warningLineChart.render();

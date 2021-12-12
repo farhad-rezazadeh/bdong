@@ -12,40 +12,14 @@
             <div class="row">
                 <!-- Website Analytics Starts-->
                 <div class="col-md-6 col-sm-12">
+                    <!-- Column Chart -->
                     <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title">Website Analytics</h4>
-                            <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
+                        <div class="card-header">
+                            <h4 class="card-title">9 month ago</h4>
                         </div>
                         <div class="card-content">
-                            <div class="card-body pb-1">
-                                <div class="d-flex justify-content-around align-items-center flex-wrap">
-                                    <div class="user-analytics">
-                                        <i class="bx bx-user mr-25 align-middle"></i>
-                                        <span class="align-middle text-muted">Users</span>
-                                        <div class="d-flex">
-                                            <div id="radial-success-chart"></div>
-                                            <h3 class="mt-1 ml-50">61K</h3>
-                                        </div>
-                                    </div>
-                                    <div class="sessions-analytics">
-                                        <i class="bx bx-trending-up align-middle mr-25"></i>
-                                        <span class="align-middle text-muted">Sessions</span>
-                                        <div class="d-flex">
-                                            <div id="radial-warning-chart"></div>
-                                            <h3 class="mt-1 ml-50">92K</h3>
-                                        </div>
-                                    </div>
-                                    <div class="bounce-rate-analytics">
-                                        <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
-                                        <span class="align-middle text-muted">Bounce Rate</span>
-                                        <div class="d-flex">
-                                            <div id="radial-danger-chart"></div>
-                                            <h3 class="mt-1 ml-50">72.6%</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="analytics-bar-chart"></div>
+                            <div class="card-body">
+                                <div id="column-chart"></div>
                             </div>
                         </div>
                     </div>
@@ -58,8 +32,8 @@
                             <div class="card">
                                 <div class="card-content">
                                     <div class="card-body text-center pb-0">
-                                        <h2>$32,690</h2>
-                                        <span class="text-muted">Referral</span> 40%
+                                        <h2>${{ balance|floatformat:2 }}</h2>
+                                        <span class="text-muted">Balance</span>
                                         <div id="success-line-chart"></div>
                                     </div>
                                 </div>
@@ -69,42 +43,25 @@
                         <div class="col-xl-12 col-12">
                             <div class="card">
                                 <div class="card-content">
-                                    <div class="card-body donut-chart-wrapper">
-                                        <div id="donut-chart" class="d-flex justify-content-center"></div>
-                                        <ul class="list-inline d-flex justify-content-around mb-0">
-                                            <li><span class="bullet bullet-xs bullet-warning mr-50"></span>Search</li>
-                                            <li><span class="bullet bullet-xs bullet-info mr-50"></span>Email</li>
-                                            <li><span class="bullet bullet-xs bullet-primary mr-50"></span>Social</li>
-                                        </ul>
+                                    <div class="card-body text-center pb-0">
+                                        <div class="badge-circle badge-circle-lg badge-circle-light-success mx-auto my-1">
+                                            <i class="bx bx-purchase-tag font-medium-5"></i>
+                                        </div>
+                                        <p class="text-muted mb-0 line-ellipsis">Purchase</p>
+                                        <h2 class="mb-0">{{ spent }}</h2>
+                                        <a class="btn btn-outline-info mt-1 mb-1"
+                                           href="{% url 'dashboard:expense:expense_list' %}">Info</a>
                                     </div>
+
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-12 col-sm-12">
                     <div class="row">
                         <!-- Conversion Chart Starts-->
-                        <div class="col-xl-12 col-md-6 col-12">
-                            <div class="card">
-                                <div class="card-header d-flex justify-content-between pb-xl-0 pt-xl-1">
-                                    <div class="conversion-title">
-                                        <h4 class="card-title">Conversion</h4>
-                                        <p>60%
-                                            <i class="bx bx-trending-up text-success font-size-small align-middle mr-25"></i>
-                                        </p>
-                                    </div>
-                                    <div class="conversion-rate">
-                                        <h2>89k</h2>
-                                    </div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-body text-center">
-                                        <div id="bar-negative-chart"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-xl-12 col-md-6 col-12">
                             <div class="row">
                                 <div class="col-12">
@@ -117,8 +74,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="total-amount">
-                                                    <h5 class="mb-0">$38,566</h5>
-                                                    <small class="text-muted">Conversion</small>
+                                                    <h5 class="mb-0">${{ credit|floatformat:2 }}</h5>
+                                                    <small class="text-muted">Credit</small>
                                                 </div>
                                             </div>
                                             <div id="primary-line-chart"></div>
@@ -129,19 +86,30 @@
                                     <div class="card">
                                         <div class="card-body d-flex align-items-center justify-content-between">
                                             <div class="d-flex align-items-center">
-                                                <div class="avatar bg-rgba-warning m-0 p-25 mr-75 mr-xl-2">
+                                                <div class="avatar bg-rgba-danger m-0 p-25 mr-75 mr-xl-2">
                                                     <div class="avatar-content">
-                                                        <i class="bx bx-dollar text-warning font-medium-2"></i>
+                                                        <i class="bx bx-dollar text-danger font-medium-2"></i>
                                                     </div>
                                                 </div>
                                                 <div class="total-amount">
-                                                    <h5 class="mb-0">$53,659</h5>
-                                                    <small class="text-muted">Income</small>
+                                                    <h5 class="mb-0">${{ debt|floatformat:2 }}</h5>
+                                                    <small class="text-muted">Debt</small>
                                                 </div>
                                             </div>
-                                            <div id="warning-line-chart"></div>
+                                            <div id="danger-line-chart"></div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-md-6 col-12">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <div class="badge-circle badge-circle-lg badge-circle-light-primary mx-auto my-1">
+                                        <i class="bx bx-money font-medium-5"></i>
+                                    </div>
+                                    <p class="text-muted mb-0 line-ellipsis">Wallet</p>
+                                    <h2 class="mb-0">{{ request.user.wallet }}</h2>
                                 </div>
                             </div>
                         </div>
@@ -150,182 +118,64 @@
             </div>
             <div class="row">
                 <!-- Activity Card Starts-->
-                <div class="col-xl-3 col-md-6 col-12 activity-card">
+                <div class="col-xl-3 col-md-6 col-12 activity-card" >
+                    <div class="card text-center " style="height: 340.688px; vertical-align: middle">
+                        <div class="card-header">
+                            <h4 class="card-title float-left">Invitations</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="font-medium-2 text-muted mb-0 line-ellipsis ">You have</div>
+                            <div class="badge-circle badge-circle-lg badge-circle-light-warning mx-auto my-1">
+                                <span class="warning h1 mt-1">{{ invitations }}</span>
+                            </div>
+                            <p class="text-muted mb-0 line-ellipsis">new Invitations</p>
+                            <a class="btn btn-outline-warning mt-1" href="{% url 'dashboard:group:invite_list' %}">Check out</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Activity</h4>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-body pt-1">
-                                <div class="d-flex activity-content">
-                                    <div class="avatar bg-rgba-primary m-0 mr-75">
-                                        <div class="avatar-content">
-                                            <i class="bx bx-bar-chart-alt-2 text-primary"></i>
-                                        </div>
-                                    </div>
-                                    <div class="activity-progress flex-grow-1">
-                                        <small class="text-muted d-inline-block mb-50">Total Sales</small>
-                                        <small class="float-right">$8,125</small>
-                                        <div class="progress progress-bar-primary progress-sm">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="50"
-                                                 style="width:50%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex activity-content">
-                                    <div class="avatar bg-rgba-success m-0 mr-75">
-                                        <div class="avatar-content">
-                                            <i class="bx bx-dollar text-success"></i>
-                                        </div>
-                                    </div>
-                                    <div class="activity-progress flex-grow-1">
-                                        <small class="text-muted d-inline-block mb-50">Income Amount</small>
-                                        <small class="float-right">$18,963</small>
-                                        <div class="progress progress-bar-success progress-sm">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="80"
-                                                 style="width:80%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex activity-content">
-                                    <div class="avatar bg-rgba-warning m-0 mr-75">
-                                        <div class="avatar-content">
-                                            <i class="bx bx-stats text-warning"></i>
-                                        </div>
-                                    </div>
-                                    <div class="activity-progress flex-grow-1">
-                                        <small class="text-muted d-inline-block mb-50">Total Budget</small>
-                                        <small class="float-right">$14,150</small>
-                                        <div class="progress progress-bar-warning progress-sm">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="60"
-                                                 style="width:60%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex mb-75">
-                                    <div class="avatar bg-rgba-danger m-0 mr-75">
-                                        <div class="avatar-content">
-                                            <i class="bx bx-check text-danger"></i>
-                                        </div>
-                                    </div>
-                                    <div class="activity-progress flex-grow-1">
-                                        <small class="text-muted d-inline-block mb-50">Completed Tasks</small>
-                                        <small class="float-right">106</small>
-                                        <div class="progress progress-bar-danger progress-sm">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="30"
-                                                 style="width:30%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Profit Report Card Starts-->
-                <div class="col-xl-3 col-md-6 col-12 profit-report-card">
-                    <div class="row">
-                        <div class="col-md-12 col-sm-6">
-                            <div class="card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h4 class="card-title">Profit Report</h4>
-                                    <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-body pb-0 d-flex justify-content-around">
-                                        <div class="d-inline-flex mr-xl-2">
-                                            <div id="profit-primary-chart"></div>
-                                            <div class="profit-content ml-50 mt-50">
-                                                <h5 class="mb-0">$12k</h5>
-                                                <small class="text-muted">2019</small>
-                                            </div>
-                                        </div>
-                                        <div class="d-inline-flex">
-                                            <div id="profit-info-chart"></div>
-                                            <div class="profit-content ml-50 mt-50">
-                                                <h5 class="mb-0">$64k</h5>
-                                                <small class="text-muted">2019</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-sm-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Registrations</h4>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-end justify-content-around">
-                                            <div class="registration-content mr-xl-2">
-                                                <h4 class="mb-0">56.3k</h4>
-                                                <i class="bx bx-trending-up success align-middle"></i>
-                                                <span class="text-success">12.8%</span>
-                                            </div>
-                                            <div id="registration-chart"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Sales Chart Starts-->
-                <div class="col-xl-3 col-md-6 col-12 sales-card">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <div class="card-title-content">
-                                <h4 class="card-title">Sales</h4>
-                                <small class="text-muted">Calculated in last 7 days</small>
-                            </div>
-                            <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
+                            <h4 class="card-title">Donut Chart</h4>
                         </div>
                         <div class="card-content">
                             <div class="card-body">
-                                <div id="sales-chart" class="mb-2"></div>
-                                <div class="d-flex justify-content-between my-1">
-                                    <div class="sales-info d-flex align-items-center">
-                                        <i class='bx bx-up-arrow-circle text-primary font-medium-5 mr-50'></i>
-                                        <div class="sales-info-content">
-                                            <h6 class="mb-0">Best Selling</h6>
-                                            <small class="text-muted">Sunday</small>
-                                        </div>
-                                    </div>
-                                    <h6 class="mb-0">28.6k</h6>
-                                </div>
-                                <div class="d-flex justify-content-between mt-2">
-                                    <div class="sales-info d-flex align-items-center">
-                                        <i class='bx bx-down-arrow-circle icon-light font-medium-5 mr-50'></i>
-                                        <div class="sales-info-content">
-                                            <h6 class="mb-0">Lowest Selling</h6>
-                                            <small class="text-muted">Thursday</small>
-                                        </div>
-                                    </div>
-                                    <h6 class="mb-0">986k</h6>
-                                </div>
+                                <div id="donut-chart" class="d-flex justify-content-center"></div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Growth Chart Starts-->
-                <div class="col-xl-3 col-md-6 col-12 growth-card">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <div class="dropdown">
-                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-                                        id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                    2019
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">
-                                    <a class="dropdown-item" href="#">2019</a>
-                                    <a class="dropdown-item" href="#">2018</a>
-                                    <a class="dropdown-item" href="#">2017</a>
+                <div class="col-md-6 col-12">
+                    <div class="card" style="height: 340.688px;">
+                        <div class="card-header">
+                            <h4 class="card-title">Invite Friend</h4>
+                        </div>
+                        <div class="card-body">
+                            <form class="form" action="{% url 'dashboard:invite_friend' %}" method="post">
+                                {% csrf_token %}
+                                <div class="form-body">
+                                    <div class="row">
+                                        <div class="col-12 mb-2">
+                                            if you are enjoyed using <b>Bdong</b> please invite your friend to use
+                                            Bdong.
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-label-group position-relative has-icon-left">
+                                                <input type="email" id="email" class="form-control"
+                                                       name="email" placeholder="Email">
+                                                <div class="form-control-position">
+                                                    <i class="bx bx-mail-send"></i>
+                                                </div>
+                                                <label for="email">Email</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 d-flex justify-content-end mb-5">
+                                            <button type="submit" class="btn btn-primary mr-1">Submit</button>
+                                            <button type="reset" class="btn btn-light-secondary">Reset</button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div id="growth-Chart"></div>
-                            <h6 class="mb-0"> 62% Company Growth in 2019</h6>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -337,4 +187,145 @@
 
 {% block js %}
     <script src="{% static 'assets/js/scripts/pages/dashboard-analytics.js' %}"></script>
+    <script>
+        $(window).on("load", function () {
+
+            var $primary = '#5A8DEE';
+            var $success = '#39DA8A';
+            var $danger = '#FF5B5C';
+            var $warning = '#FDAC41';
+            var $info = '#00CFDD';
+            var $label_color = '#475f7b';
+            var $primary_light = '#E2ECFF';
+            var $danger_light = '#ffeed9';
+            var $gray_light = '#828D99';
+            var $sub_label_color = "#596778";
+            var $radial_bg = "#e7edf3";
+
+            var themeColors = [$primary, $danger, $warning, $success, $info];
+            var columnChartOptions = {
+                chart: {
+                    height: 350,
+                    type: 'bar',
+                },
+                colors: themeColors,
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        endingShape: 'rounded',
+                        columnWidth: '35%',
+                    },
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
+                },
+                series: [{
+                    name: 'Share',
+                    data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+                }, {
+                    name: 'Paid',
+                    data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+                }],
+                legend: {
+                    offsetY: -10
+                },
+                xaxis: {
+                    categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                },
+                yaxis: {
+                    title: {
+                        text: '$ (hundred)'
+                    }
+                },
+                fill: {
+                    opacity: 1
+
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return "$ " + val + " thousands"
+                        }
+                    }
+                }
+            }
+            var columnChart = new ApexCharts(
+                document.querySelector("#column-chart"),
+                columnChartOptions
+            );
+
+            columnChart.render();
+
+            // Donut Chart
+            // ---------------------
+            var donutChartOption = {
+                chart: {
+                    width: 300,
+                    type: 'donut',
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                series: [{% for group_share in share_per_group %}{{ group_share.1 }}, {% endfor %}],
+                labels: [{% for group_share in share_per_group %}"{{ group_share.0 }}",{% endfor %}],
+                stroke: {
+                    width: 0,
+                    lineCap: 'round',
+                },
+                colors: [$primary, $info, $warning, $success, $gray_light],
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            size: '90%',
+                            labels: {
+                                show: true,
+                                name: {
+                                    show: true,
+                                    fontSize: '15px',
+                                    colors: $sub_label_color,
+                                    offsetY: 20,
+                                    fontFamily: 'IBM Plex Sans',
+                                },
+                                value: {
+                                    show: true,
+                                    fontSize: '26px',
+                                    fontFamily: 'Rubik',
+                                    color: $label_color,
+                                    offsetY: -20,
+                                    formatter: function (val) {
+                                        return val
+                                    }
+                                },
+                                total: {
+                                    show: true,
+                                    label: 'Total',
+                                    color: $gray_light,
+                                    formatter: function (w) {
+                                        return w.globals.seriesTotals.reduce(function (a, b) {
+                                            return a + b
+                                        }, 0)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                legend: {
+                    show: false
+                }
+            }
+
+            var donutChart = new ApexCharts(
+                document.querySelector("#donut-chart"),
+                donutChartOption
+            );
+            donutChart.render();
+
+        });
+    </script>
 {% endblock %}

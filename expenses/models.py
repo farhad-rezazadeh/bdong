@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 from django.db import models
-from django.db.models import Q, F
+from django.db.models import Q, F, Sum
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 
@@ -59,11 +59,27 @@ class Expense(models.Model):
         return self.description
 
 
+class ShareManger(models.Manager):
+    def get_spent(self, user):
+        return self.filter(user=user).aggregate(Sum("share"))["share__sum"] or 0
+
+    def get_group_most_share(self, user):
+        expense_per_group = self.filter(user=user).values("expense__group").annotate(Sum("share"))
+        expense_per_group = [
+            (str(Group.objects.get(pk=_["expense__group"])), float(_["share__sum"])) for _ in expense_per_group
+        ][:4]
+        sum_expense_per_group = sum([_[1] for _ in expense_per_group])
+        expense_per_group.append(("other", float(self.get_spent(user)) - sum_expense_per_group))
+        return expense_per_group
+
+
 class Share(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     expense = models.ForeignKey(Expense, on_delete=models.CASCADE)
     share = models.DecimalField(default=0.00, max_digits=12, decimal_places=2, validators=[MinValueValidator(0.00)])
     paid = models.DecimalField(default=0.00, max_digits=12, decimal_places=2, validators=[MinValueValidator(0.00)])
+
+    objects = ShareManger()
 
     class Meta:
         unique_together = [["user", "expense"]]
