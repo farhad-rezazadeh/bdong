@@ -25,6 +25,6 @@ def get_total_debt(user):
     debt = 0
     credit_keys = r.keys(f"{user.pk}:*")
     for credit_key in credit_keys:
-        if _ := float(r.get(credit_key)) < 0:
+        if (_ := float(r.get(credit_key))) < 0:
             debt += _
-    return debt
+    return debt * -1
